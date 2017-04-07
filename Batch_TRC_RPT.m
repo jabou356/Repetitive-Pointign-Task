@@ -8,21 +8,26 @@ GenericPathRPT
 d=dir(Path.DataPath);
 j=0;
 for i=1:length(d)
-    if strcmp(d(i).name{1:7},'Subject')==1
+    if length(d(i).name)>6
+    if strcmp(d(i).name(1:7),'Subject')==1
         j=j+1;
-        subjectID(j)=str2num(d(i).name{8:end});
+        subjectID(j)=str2num(d(i).name(8:end));
+    end
     end
 end
 
 
-for isubject=1:lenght(subjectID)
+for isubject=2:length(subjectID)
     
     SubjectPathRPT;
     
-    KloNames=dir([Path.KLOimportPath '*.klo']);
-    KloNames=KloNames.name;
+    Klofiles=dir([Path.KLOimportPath '*.klo']);
     
-    sg_KLOtoTRC_forbatch(KloNames,Path.KLOimportPath,Path.TRCpath);
+    
+    for itrial=1:length(Klofiles)
+    KloName=Klofiles(itrial).name;
+    sg_KLOtoTRC_forbatch(KloName,Path.KLOimportPath,Path.TRCpath);
+    end
     
 end;
 
