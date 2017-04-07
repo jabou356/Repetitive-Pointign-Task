@@ -14,7 +14,15 @@ for i=1:length(d)
     end
 end
 
-subjectID=sort(subjectID);
 
-for isujet=
+for isubject=1:lenght(subjectID)
+    
+    SubjectPathRPT;
+    
+    KloNames=dir([Path.KLOimportPath '*.klo']);
+    KloNames=KloNames.name;
+    
+    sg_KLOtoTRC_forbatch(KloNames,Path.KLOimportPath,Path.TRCpath);
+    
+end;
 

@@ -1,8 +1,8 @@
 %% Chemin des fichiers
     % Dossier du sujet
-    Path.SubjectPath  = [Path.DataPath 'Subject' num2str(isubject) '\'];
+    Path.SubjectPath  = [Path.DataPath 'Subject' num2str(subjectID(isubject)) '\'];
     % Dossier du modèle pour le sujet
-    Path.ScaledModel  = [Path.SubjectPath 'StandfordVA_Hiram' sum2str(isubject) '.osim'];
+    Path.ScaledModel  = [Path.SubjectPath 'StandfordVA_Hiram' sum2str(subjectID(isubject)) '.osim'];
     % Dossier des data
     Path.KLOimportPath = [Path.SubjectPath 'inputKLO\'];
     % Dossiers d'exportation
