@@ -18,7 +18,7 @@ end
 
 
 for isubject=1:length(subjectID)
-        disp(['Processing subject #' num2 ' (' num2str(length(Alias.sujet) - isujet+1) ' sur ' num2str(length(Alias.sujet)) ')'])
+disp(['Processing subject #' num2str(subjectID(isubject)) ' ('num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
 
     SubjectPathRPT;
     
