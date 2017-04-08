@@ -27,6 +27,6 @@ disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject)
 SubjectPathRPT
     % Import reconstruction
 
-    setupAndRunScaleRPT
+    setupAndRunIKRPT
  
 end
