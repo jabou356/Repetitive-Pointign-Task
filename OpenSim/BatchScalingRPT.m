@@ -1,31 +1,32 @@
-%   Description:
-%       contribution_hauteur_preparation is used to compute the contribution of each
-%       articulation to the height
-%   Output:
-%       contribution_hauteur_preparation gives matrix for input in SPM1D and GRAMM
-%   Functions:
-%       contribution_hauteur_preparation uses functions present in \\10.89.24.15\e\Project_IRSST_LeverCaisse\Codes\Functions_Matlab
-%
-%   Author:  Romain Martinez
-%   email:   martinez.staps@gmail.com
-%   Website: https://github.com/romainmartinez
+%Developed by Jason Bouffard
 %_____________________________________________________________________________
 
 clear ; close all; clc
 
-%% Chargement des fonctions
+%% Load generic paths
 
-GenericPath
+GenericPathRPT
 
-%% Nom des sujets
+%% Load subject
 
-for isujet = length(Alias.sujet)   : -1 : 1
+d=dir(Path.DataPath);
+j=0;
+for i=1:length(d)
+    if length(d(i).name)>6
+    if strcmp(d(i).name(1:7),'Subject')==1
+        j=j+1;
+        subjectID(j)=str2num(d(i).name(8:end));
+    end
+    end
+end
+
+for isubject=1:length(subjectID)    
     
-    disp(['Traitement de ' cell2mat(Alias.sujet(isujet)) ' (' num2str(length(Alias.sujet) - isujet+1) ' sur ' num2str(length(Alias.sujet)) ')'])
+disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
 %     %% Chemin des fichiers
-SubjectPath
+SubjectPathRPT
     % Import reconstruction
 
-    setupAndRunScale
+    setupAndRunScaleRPT
  
 end
