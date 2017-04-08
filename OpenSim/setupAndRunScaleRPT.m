@@ -30,22 +30,23 @@ import org.opensim.modeling.*
 % Get and operate on the files
 scaleTool = ScaleTool(Path.OpensimGenericScale);
 
-trialForScale = [Path.TRCpath 'static.trc']; %Eventually Static trial
-ScaledModelFile=[Path.exportPath Alias.sujet{isujet} 'scaled.osim'];
-ScaleSetFile=[Path.exportPath Alias.sujet{isujet} 'ScaleSet.xml'];
-ScaleModelNewMKRFiler=[Path.exportPath Alias.sujet{isujet} 'scaledNewMKR.osim'];
-scaleTool.setName([Alias.sujet{isujet} 'scaled']);
+TRCfiles=dir([Path.TRCpath '*.trc']);
+TRCName=TRCfiles(1).name;
+trialForScale = [Path.TRCpath TRCName]; %Eventually Static trial
+
+ScaledModelFile=Path.ScaledModel;
+ScaleSetFile=[Path.SubjectPath 'StandfordVA_Hiram' num2str(subjectID(isubject)) 'ScaleSet.xml'];
+ScaleModelNewMKRFiler=Path.ScaledAdjustedModel;
+scaleTool.setName(['StandfordVA_Hiram' num2str(subjectID(isubject)) 'scaled']);
 
 scaleTool.getGenericModelMaker().setModelFileName(Path.OpensimGenericModel);
 
-path2subject=Path.exportPath;
-
 % Get initial and intial time
 markerData = MarkerData(trialForScale);
-initial_time = markerData.getStartFrameTime(); %For static Trial
-final_time = markerData.getLastFrameTime(); %For static trial
+% initial_time = markerData.getStartFrameTime(); %For static Trial
+% final_time = markerData.getLastFrameTime(); %For static trial
 range=ArrayDouble;
-range.setValues([initial_time final_time],2);
+range.setValues([5 5.5],2);%([initial_time final_time],2); for static trial
 
 %Setup Model Scaler for this subject
 
@@ -78,8 +79,8 @@ MyState=ScaledModel.initSystem();
 markerplacer.processModel(MyState,ScaledModel)
 
 % Save the settings in a setup file
-outfile = ['Setup_Scale' Alias.sujet{isujet} '.xml'];
-scaleTool.print([Path.exportPath outfile]);
+outfile = ['Setup_Scale' num2str(subjectID(isubject)) '.xml'];
+scaleTool.print([Path.SubjectPath outfile]);
 
   
 
