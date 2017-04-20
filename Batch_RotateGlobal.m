@@ -29,7 +29,7 @@ disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject)
     for itrial=1:length(Klofiles)
     KloName=Klofiles(itrial).name;
     data=RotateGlobal([Path.KLOimportPath KloName],Origin, Ry);
-    save([Path.KLOimportPath, KloName], 'data');
+    save([Path.RotateKLOPath KloName], 'data');
     clear data
     end
     

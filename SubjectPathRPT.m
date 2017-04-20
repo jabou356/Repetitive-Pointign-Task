@@ -8,6 +8,12 @@
     % Dossier des data
     Path.KLOimportPath = [Path.SubjectPath 'inputKLO/'];
     % Dossiers d'exportation
+    
+    Path.RotateKLOPath = [Path.SubjectPath 'rotateKLO/'];
+    if isdir(Path.RotateKLOPath)==0
+        mkdir(Path.RotateKLOPath);
+    end
+    
     Path.exportPath = [Path.SubjectPath 'Result/'];
     
     if isdir(Path.exportPath)==0

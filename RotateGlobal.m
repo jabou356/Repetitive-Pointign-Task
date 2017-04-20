@@ -9,7 +9,7 @@ function [data] = RotateGlobal(path,Origin,Ry)
 
 
 %% Load Targets static trials and defining variables
-
+load(path,'-mat');
 
 VideoLength=length(fieldnames(data.VideoData));
 TrialLength=length(data.VideoData.channel1.xdata);
@@ -21,11 +21,16 @@ TrialLength=length(data.VideoData.channel1.xdata);
 %keep the right order (x,y,z)
 
 for i=VideoLength:-1:1
-  
-    s=['data.VideoData.channel' num2str(i) '.xdata=data.VideoData.channel' num2str(i) '.ydata-Origin(1);'];eval(s);
-    s=['data.VideoData.channel' num2str(i) '.ydata=data.VideoData.channel' num2str(i) '.zdata-Origin(2);'];eval(s);
-    s=['data.VideoData.channel' num2str(i) '.zdata=data.VideoData.channel' num2str(i) '.xdata-Origin(3)'];eval(s);
+  s=['tempx=data.VideoData.channel' num2str(i) '.xdata;'];eval(s);
+  s=['tempy=data.VideoData.channel' num2str(i) '.ydata;'];eval(s);
+  s=['tempz=data.VideoData.channel' num2str(i) '.zdata;'];eval(s);
+    s=['data.VideoData.channel' num2str(i) '.xdata=tempy-Origin(1);'];eval(s);
+    s=['data.VideoData.channel' num2str(i) '.ydata=tempz-Origin(2);'];eval(s);
+    s=['data.VideoData.channel' num2str(i) '.zdata=tempx-Origin(3);'];eval(s);
 
+    
+     s=['data.VideoData.channel' num2str(i) '.xdata=Ry(1,1)*tempy+Ry(2,1)*tempx;'];eval(s);
+     s=['data.VideoData.channel' num2str(i) '.zdata=Ry(1,2)*tempy+Ry(2,2)*tempx;'];eval(s);
 end
 
 
@@ -36,7 +41,6 @@ end
 
 for i=1:VideoLength
     
-    s=['data.VideoData.channel' num2str(i) '.xdata=Ry(1,1)*data.VideoData.channel' num2str(i) '.xdata+Ry(2,1)*data.VideoData.channel' num2str(Originchan) '.zdata;'];eval(s);
-    s=['data.VideoData.channel' num2str(i) '.zdata=Ry(1,2)*data.VideoData.channel' num2str(i) '.xdata+Ry(2,2)*data.VideoData.channel' num2str(Originchan) '.zdata;'];eval(s);
+    
 
 end

@@ -41,10 +41,10 @@ X1UnitVector=[X1Vector(1)/X1VectorNorm X1Vector(2)/X1VectorNorm X1Vector(3)/X1Ve
 
 %% Calculate the rotation needed to get the targeted coordinates (around Y axis)
 %[x y 0]=[c ,0,-s;0,1,0; s,0,c][X1UnitVector(1:3)]... isolate rotAngle
-%from 0=-s*X1UnitVector(1)+c*X1UnitVector(3)+0*X1UnitVector(2)
+%from 0=-s*X1UnitVector(1)+c*X1UnitVector()+0*X1UnitVector(2)
 
-rotAngle=atan2(X1UnitVector(3),X1UnitVector(1)); 
-Ry=[cos(rotAngle), -sin(rotAngle); sin(rotAngle), cos(rotAngle)]; %Rotation Matrix to apply to all channels
+rotAngle=atan2(-X1UnitVector(3),X1UnitVector(1)); 
+Ry=[-sin(rotAngle), cos(rotAngle); cos(rotAngle), sin(rotAngle)]; %Rotation Matrix to apply to all channels
 
 end
 
