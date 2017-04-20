@@ -11,8 +11,8 @@ function [data] = RotateGlobal(path,Origin,Ry)
 %% Load Targets static trials and defining variables
 load(path,'-mat');
 
-VideoLength=length(fieldnames(data.VideoFilt));
-TrialLength=length(data.VideoFilt.channel1.xdata);
+VideoLength=length(fieldnames(data.VideoData));
+TrialLength=length(data.VideoData.channel1.xdata);
 
 
 %% Translating data so the origin correspond to the OpenSimOrigin.
@@ -21,16 +21,16 @@ TrialLength=length(data.VideoFilt.channel1.xdata);
 %keep the right order (x,y,z)
 
 for i=VideoLength:-1:1
-  s=['tempx=data.VideoFilt.channel' num2str(i) '.xdata;'];eval(s);
-  s=['tempy=data.VideoFilt.channel' num2str(i) '.ydata;'];eval(s);
-  s=['tempz=data.VideoFilt.channel' num2str(i) '.zdata;'];eval(s);
-    s=['data.VideoFilt.channel' num2str(i) '.xdata=tempy-Origin(1);'];eval(s);
-    s=['data.VideoFilt.channel' num2str(i) '.ydata=tempz-Origin(2);'];eval(s);
-    s=['data.VideoFilt.channel' num2str(i) '.zdata=tempx-Origin(3);'];eval(s);
+  s=['tempx=data.VideoData.channel' num2str(i) '.xdata;'];eval(s);
+  s=['tempy=data.VideoData.channel' num2str(i) '.ydata;'];eval(s);
+  s=['tempz=data.VideoData.channel' num2str(i) '.zdata;'];eval(s);
+    s=['data.VideoData.channel' num2str(i) '.xdata=tempy-Origin(1);'];eval(s);
+    s=['data.VideoData.channel' num2str(i) '.ydata=tempz-Origin(2);'];eval(s);
+    s=['data.VideoData.channel' num2str(i) '.zdata=tempx-Origin(3);'];eval(s);
 
     
-     s=['data.VideoFilt.channel' num2str(i) '.xdata=Ry(1,1)*tempy+Ry(2,1)*tempx;'];eval(s);
-     s=['data.VideoFilt.channel' num2str(i) '.zdata=Ry(1,2)*tempy+Ry(2,2)*tempx;'];eval(s);
+     s=['data.VideoData.channel' num2str(i) '.xdata=Ry(1,1)*tempy+Ry(2,1)*tempx;'];eval(s);
+     s=['data.VideoData.channel' num2str(i) '.zdata=Ry(1,2)*tempy+Ry(2,2)*tempx;'];eval(s);
 end
 
 
