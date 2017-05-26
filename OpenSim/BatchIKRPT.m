@@ -1,4 +1,4 @@
-%Developed by Jason Bouffard
+ %Developed by Jason Bouffard
 %_____________________________________________________________________________
 
 clear ; close all; clc
@@ -20,7 +20,7 @@ for i=1:length(d)
     end
 end
 
-for isubject=1:length(subjectID)    
+for isubject=1%:length(subjectID)    
     
 disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
 %     %% Chemin des fichiers
