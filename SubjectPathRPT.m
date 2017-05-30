@@ -34,4 +34,13 @@
         mkdir(Path.IKsetuppath);
     end
     
+    Path.BKpath=[Path.SubjectPath,'BodyKinematics/'];
+    Path.BKresultpath=[Path.BKpath,'result/'];
+    Path.BKsetuppath=[Path.BKpath,'setup/'];
+    if isdir(Path.BKpath)==0
+        mkdir(Path.BKpath);
+        mkdir(Path.BKresultpath);
+        mkdir(Path.BKsetuppath);
+    end
+    
    

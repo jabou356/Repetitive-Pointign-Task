@@ -7,3 +7,4 @@ Path.OpensimSetupJB=[Path.ProjectPath '/OpenSimSetUpFiles/'];
 Path.OpensimGenericModel=[Path.OpensimSetupJB,'StandfordVA_wmarkers.osim'];
 Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling.xml'];
 Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];
+Path.OpensimGenericBK=[Path.OpensimSetupJB,'Conf_BK.xml'];
