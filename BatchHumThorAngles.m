@@ -25,10 +25,16 @@ SubjectPathRPT
    
 BodyPosFiles=dir([Path.BKresultpath '*pos_global.sto']);
 
-for itrial=1:length(BodyPosFiles)
+for itrial=1%:length(BodyPosFiles)
     
-importdata([BodyPosFiles(itrial).folder '\' BodyPosFiles(itrial).name]);
+imported=importdata([BodyPosFiles(itrial).folder '\' BodyPosFiles(itrial).name]);
 
-HumThorAngles(Path)
+if strcmp(imported.textdata{5,1},'inDegrees=yes')
+    imported.data=imported.data*pi/180;
+end
+
+HumThor = HumThorAngles(imported.data);
    
+end
+
 end

@@ -90,8 +90,8 @@ function [psi_out, theta_out, phi_out] = angleRotation(matrice, sequence)
                 phi   = atan2(matrice(3,2,:,iM), -matrice(3,1,:,iM)) + psi;
             
             case 'yxy' %Added by JB 29mai 2017, David Eberly, geometrictools.com, Euler Angle formulas
-                theta = acos(matrice(2,2,:,iM));
                 psi   = atan2(matrice(1,2,:,iM),matrice(3,2,:,iM));
+                theta = acos(matrice(2,2,:,iM));                
                 phi   = atan2(matrice(2,1,:,iM),-matrice(2,3,:,iM));
 
             otherwise

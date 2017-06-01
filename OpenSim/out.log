@@ -6,3 +6,72 @@ No external loads will be applied (external loads file not specified).
 
 Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot.
 Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation Trial09 to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation Trial16 to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation static to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Loaded model Stanford VA Upper Limb Model from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/StandfordVA_Hiram1.osim
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation Trial09 to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation Trial16 to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation static to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Loaded model Stanford VA Upper Limb Model from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/StandfordVA_Hiram1.osim
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial09_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation Trial09 to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/Trial16_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation Trial16 to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot (nr=3600 nc=101)
+No external loads will be applied (external loads file not specified).
+
+Loading coordinates from file C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot.
+Storage: file=C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/IK/result/static_ik.mot (nr=3600 nc=101)
+Found 3600 state vectors with time stamps ranging from 0 to 29.9917.
+Executing the analyses from 0 to 29.9917...
+Printing results of investigation static to C:\Users\Jason\OneDrive - McGill University\RepetitivePointingTask_forJason/Data/Subject1/BodyKinematics/result/.
