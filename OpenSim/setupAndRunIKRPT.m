@@ -31,7 +31,7 @@ import org.opensim.modeling.*
  ikTool = InverseKinematicsTool(Path.OpensimGenericIK);
 
 % Load the model and initialize
-model = Model(Path.ScaledModel);
+model = Model(Path.ScaledAdjustedModel);
 model.initSystem();
 
 % Tell Tool to use the loaded model
