@@ -23,18 +23,18 @@ TRGDchan=find(isTRGD);
 TRGPchan=find(isTRGP);
 Originchan=find(isOrigin);
 
-Origin(1)=mean(data.VideoData.('channel' num2str(Originchan)]).ydata);
-Origin(2)=mean(data.VideoData.('channel' num2str(Originchan)]).zdata);
-Origin(3)=mean(data.VideoData.('channel' num2str(Originchan)]).xdata);
+Origin(1)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).ydata);
+Origin(2)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).zdata);
+Origin(3)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).xdata);
 
 
 %% Defining the wanted X axis (TRGP to TRGD) in the current global coordinates
 %[X Y Z] vector joining the two targets. It is our final X axis. Mean of 
 %static trial to minimize noise.
 
-X1Vector(1)=mean(data.VideoData.(['channel' num2str(TRGDchan)]).ydata-data.VideoData.(['channel' num2str(TRGPchan)]).ydata);
-X1Vector(2)=mean(data.VideoData.(['channel' num2str(TRGDchan)]).zdata-data.VideoData.(['channel' num2str(TRGPchan)]).zdata);
-X1Vector(3)=mean(data.VideoData.(['channel' num2str(TRGDchan)]).xdata-data.VideoData.(['channel' num2str(TRGPchan)]).xdata);;eval(s);
+X1Vector(1)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).ydata-data.VideoData.(['channel' num2str(TRGPchan)]).ydata);
+X1Vector(2)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).zdata-data.VideoData.(['channel' num2str(TRGPchan)]).zdata);
+X1Vector(3)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).xdata-data.VideoData.(['channel' num2str(TRGPchan)]).xdata);
 
 X1VectorNorm=norm([X1Vector(1) X1Vector(2) X1Vector(3)]); 
 X1UnitVector=[X1Vector(1)/X1VectorNorm X1Vector(2)/X1VectorNorm X1Vector(3)/X1VectorNorm];
