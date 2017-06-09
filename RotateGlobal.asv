@@ -21,13 +21,12 @@ TrialLength=length(data.VideoData.channel1.xdata);
 %keep the right order (x,y,z)
 
 for i=VideoLength:-1:1
-    %% Apply translations
     tempx=data.VideoData.(['channel' num2str(i)]).xdata-Origin(3);
     tempy=data.VideoData.(['channel' num2str(i)]).ydata-Origin(1);
     tempz=data.VideoData.(['channel' num2str(i)]).zdata-Origin(2);
     
     
-    %% Apply the rotations
+    
     data.VideoData.(['channel' num2str(i)]).xdata=Ry(1,1)*tempy+Ry(2,1)*tempx;
     data.VideoData.(['channel' num2str(i)]).ydata=tempz;
     data.VideoData.(['channel' num2str(i)]).zdata=Ry(1,2)*tempy+Ry(2,2)*tempx;
@@ -35,3 +34,12 @@ end
 
 
 
+
+
+%% Apply the calculated rotation matrix to all data
+
+for i=1:VideoLength
+    
+    
+
+end

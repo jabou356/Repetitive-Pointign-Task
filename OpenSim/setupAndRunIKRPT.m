@@ -72,5 +72,8 @@ for trial= 1:nTrials
     fprintf(['Performing IK on cycle # ' num2str(trial) '\n']);
     % Run IK
     ikTool.run();
+    
+    copyfile('out.log',[Path.IKsetuppath name '_out.log'])
+
 
 end
