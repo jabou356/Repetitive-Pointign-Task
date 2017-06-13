@@ -8,3 +8,4 @@ Path.OpensimGenericModel=[Path.OpensimSetupJB,'Humerothoracic_wscapula.osim'];
 Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling.xml'];
 Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];
 Path.OpensimGenericBK=[Path.OpensimSetupJB,'Conf_BK.xml'];
+Path.GroupDataPath=[Path.ProjectPath '/GroupData/'];
