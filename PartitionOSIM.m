@@ -12,7 +12,7 @@ EndpointData=data.VideoData.(['channel' num2str(find(isRIDX))]).xdata;
 [b, a]=butter(2, 15/50, 'low');
 for ichan=1:length(fieldnames(data.OSIMDoF))
     fdata.OSIMDoF.(['channel' num2str(ichan)]).data...
-        filtfilt(b,a,data.OSIMDoF.(['channel' num2str(ichan)]).data);
+     =filtfilt(b,a,data.OSIMDoF.(['channel' num2str(ichan)]).data);
 end
 
 

@@ -26,6 +26,7 @@ for isubject=[1:3 7 9:length(subjectID) ]
     for itrial = 1 : length(Klofiles)
         %Import .klo file
         KloName=Klofiles(itrial).name;
+        if ~strcmp(KloName,'static.klo')
         load([Path.exportPath KloName], '-mat', 'data');
         
         PartitionOSIM
@@ -33,6 +34,7 @@ for isubject=[1:3 7 9:length(subjectID) ]
         save([Path.exportPath KloName],'data')
         
         clear data fdata
+        end
         
     end
     
