@@ -32,6 +32,8 @@ for isubject=[1:3 7 9:length(subjectID) ]
         
         save([Path.exportPath KloName],'data')
         
-        clear data
+        clear data fdata
+        
+    end
     
 end;
