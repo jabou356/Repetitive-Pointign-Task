@@ -17,17 +17,17 @@ for i=1:length(d)
 end
 
 
-for isubject=1:length(subjectID)
+for isubject=[2:3 7 9:length(subjectID) ] 
 disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
 
     SubjectPathRPT;
     
-    Klofiles=dir([Path.KLOimportPath '*.klo']);
+    Klofiles=dir([Path.RotateKLOPath '*.klo']);
     
     
     for itrial=1:length(Klofiles)
     KloName=Klofiles(itrial).name;
-    sg_KLOtoTRC_forbatch(KloName,Path.KLOimportPath,Path.TRCpath);
+    sg_KLOtoTRC_forbatch(KloName,Path.RotateKLOPath,Path.TRCpath);
     end
     
 end;

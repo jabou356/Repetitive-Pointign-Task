@@ -30,8 +30,8 @@ import org.opensim.modeling.*
 % Get and operate on the files
 scaleTool = ScaleTool(Path.OpensimGenericScale);
 
-TRCfiles=dir([Path.TRCpath '*.trc']);
-TRCName=TRCfiles(1).name;
+%TRCfiles=dir([Path.TRCpath '*.trc']);
+TRCName='static.trc' %TRCfiles(1).name;
 trialForScale = [Path.TRCpath TRCName]; %Eventually Static trial
 
 ScaledModelFile=Path.ScaledModel;
@@ -43,10 +43,10 @@ scaleTool.getGenericModelMaker().setModelFileName(Path.OpensimGenericModel);
 
 % Get initial and intial time
 markerData = MarkerData(trialForScale);
-% initial_time = markerData.getStartFrameTime(); %For static Trial
-% final_time = markerData.getLastFrameTime(); %For static trial
+initial_time = markerData.getStartFrameTime(); %For static Trial
+final_time = markerData.getLastFrameTime(); %For static trial
 range=ArrayDouble;
-range.setValues([5 5.5],2);%([initial_time final_time],2); for static trial
+range.setValues([initial_time final_time],2); %for static trial
 
 %Setup Model Scaler for this subject
 

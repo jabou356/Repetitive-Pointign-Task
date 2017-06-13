@@ -1,5 +1,3 @@
-%Developed by Jason Bouffard
-%_____________________________________________________________________________
 
 clear ; close all; clc
 
@@ -20,13 +18,14 @@ for i=1:length(d)
     end
 end
 
-for isubject=18:length(subjectID)    
+%% Nom des sujets
+
+for isubject = 1%:length(subjectID)
     
 disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
 %     %% Chemin des fichiers
-SubjectPathRPT
-    % Import reconstruction
-
-    setupAndRunScaleRPT
- 
+SubjectPathRPT   
+   
+    setupAndRunBodyKinematics(Path)
+   
 end

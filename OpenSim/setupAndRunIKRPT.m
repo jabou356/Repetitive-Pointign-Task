@@ -71,6 +71,12 @@ for trial= 1:nTrials
     
     fprintf(['Performing IK on cycle # ' num2str(trial) '\n']);
     % Run IK
+    diary([Path.IKsetuppath name '_out.log'])
+    diary on
     ikTool.run();
+    diary off
+    
+  %  copyfile('out.log',[Path.IKsetuppath name '_out.log'])
 
+clf
 end

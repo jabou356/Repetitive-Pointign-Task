@@ -1,6 +1,3 @@
-%Developed by Jason Bouffard
-%_____________________________________________________________________________
-
 clear ; close all; clc
 
 %% Load generic paths
@@ -20,13 +17,24 @@ for i=1:length(d)
     end
 end
 
-for isubject=18:length(subjectID)    
-    
+for isubject = 1%:length(subjectID)
+ 
 disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
 %     %% Chemin des fichiers
-SubjectPathRPT
-    % Import reconstruction
+SubjectPathRPT   
+   
+BodyPosFiles=dir([Path.BKresultpath '*pos_global.sto']);
 
-    setupAndRunScaleRPT
- 
+for itrial=1%:length(BodyPosFiles)
+    
+imported=importdata([BodyPosFiles(itrial).folder '\' BodyPosFiles(itrial).name]);
+
+if strcmp(imported.textdata{5,1},'inDegrees=yes')
+    imported.data=imported.data*pi/180;
+end
+
+HumThor = HumThorAngles(imported.data);
+   
+end
+
 end
