@@ -7,8 +7,8 @@ load(path,'-mat');
 
 VideoLength=length(fieldnames(data.VideoData));
 TrialLength=length(data.VideoData.channel1.xdata);
-DistalTargetName='TRGD';
-ProximalTargetName='TRGP';
+DistalTargetName='DTRG';
+ProximalTargetName='PTRG';
 OriginName='CLAV';
 
 %% Find relevent Channels
