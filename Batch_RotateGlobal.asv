@@ -26,16 +26,10 @@ disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject)
     Klofiles=dir([Path.KLOimportPath '*.klo']);
     
     if strcmp(projet, 'Asha')
-        for itrial=1:length(Klofiles)
-            KloName=Klofiles(itrial).name;
-            if strncmp(KloName, 'Trial', 5)
-                break
-            end
-        end         
-    [~, Ry]=SetUpRotateGlobal([Path.KLOimportPath, KloName]);
+    [~, Ry]=SetUpRotateGlobal([Path.KLOimportPath 'static.klo']);
     end
     
-    for itrial=1:length(Klofiles)        
+    for itrial=1:length(Klofiles)
     KloName=Klofiles(itrial).name;
     data=RotateGlobal([Path.KLOimportPath KloName],Origin, Ry);
     save([Path.RotateKLOPath KloName], 'data');

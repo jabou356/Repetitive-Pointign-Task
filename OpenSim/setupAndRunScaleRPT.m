@@ -46,7 +46,7 @@ markerData = MarkerData(trialForScale);
 initial_time = markerData.getStartFrameTime(); %For static Trial
 final_time = markerData.getLastFrameTime(); %For static trial
 range=ArrayDouble;
-range.setValues([initial_time final_time],2); %for static trial
+range.setValues([initial_time+3 initial_time+4],2); %for static trial
 
 %Setup Model Scaler for this subject
 
