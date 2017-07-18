@@ -1,4 +1,4 @@
-clear clc
+clear; clc;
 
 DoF={'ground_thorax_xRotation' 'ground_thorax_yRotation' 'ground_thorax_zRotation'...
     'ground_thorax_xTranslation' 'ground_thorax_yTranslation' 'ground_thorax_zTranslation'...
@@ -20,7 +20,7 @@ end
 
 
 
-for isubject=[2:3 7 9:length(subjectID) ] %:length(subjectID)
+for isubject=[2:10 12:17 ] %:length(subjectID)
     disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
     
     SubjectPathRPT;
@@ -44,8 +44,9 @@ for isubject=[2:3 7 9:length(subjectID) ] %:length(subjectID)
             s=['data.OSIMDoF.channel' num2str(iDoF) '.data=motdata.data(:,chan);'];eval(s);
         end
         
-        save([Path.exportPath KloName])
+        save([Path.exportPath KloName], 'data')
         
+        clear data
     end
     
 end;
