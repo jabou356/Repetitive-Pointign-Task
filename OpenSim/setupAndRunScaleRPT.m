@@ -31,13 +31,13 @@ import org.opensim.modeling.*
 scaleTool = ScaleTool(Path.OpensimGenericScale);
 
 %TRCfiles=dir([Path.TRCpath '*.trc']);
-TRCName='static.trc' %TRCfiles(1).name;
+TRCName='static.trc'; %TRCfiles(1).name;
 trialForScale = [Path.TRCpath TRCName]; %Eventually Static trial
 
 ScaledModelFile=Path.ScaledModel;
-ScaleSetFile=[Path.SubjectPath 'StandfordVA_Hiram' num2str(subjectID(isubject)) 'ScaleSet.xml'];
+ScaleSetFile=[Path.SubjectPath 'StandfordVA_' projet num2str(subjectID(isubject)) 'ScaleSet.xml'];
 ScaleModelNewMKRFiler=Path.ScaledAdjustedModel;
-scaleTool.setName(['StandfordVA_Hiram' num2str(subjectID(isubject)) 'scaled']);
+scaleTool.setName(['StandfordVA_' projet num2str(subjectID(isubject)) 'scaled']);
 
 scaleTool.getGenericModelMaker().setModelFileName(Path.OpensimGenericModel);
 

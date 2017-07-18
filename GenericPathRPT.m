@@ -6,7 +6,7 @@ if machinetype == 1
 Path.DataPath=[Path.ProjectPath '\Data\', projet, '\'];
 Path.OpensimSetupJB=[Path.ProjectPath '\OpenSimSetUpFiles\'];
 Path.OpensimGenericModel=[Path.OpensimSetupJB,'Humerothoracic_wscapula.osim'];
-Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling.xml'];
+Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling - ' projet '.xml'];
 Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];
 Path.OpensimGenericBK=[Path.OpensimSetupJB,'Conf_BK.xml'];
 Path.GroupDataPath=[Path.ProjectPath '\GroupData\'];
