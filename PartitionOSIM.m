@@ -1,4 +1,4 @@
-SignalEndpoint={'RIDX'};
+SignalEndpoint={'RINXF'};
 
 VideoLength=length(fieldnames(data.VideoData));
 

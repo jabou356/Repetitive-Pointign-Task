@@ -78,5 +78,5 @@ for trial= 1:nTrials
     
   %  copyfile('out.log',[Path.IKsetuppath name '_out.log'])
 
-clf
+clc
 end
