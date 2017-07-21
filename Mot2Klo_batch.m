@@ -25,13 +25,13 @@ for isubject=1:length(subjectID)%:length(subjectID)
     
     SubjectPathRPT;
     
-    Klofiles=dir([Path.KLOimportPath '*.klo']);
+    Klofiles=dir([Path.RotateKLOPath '*.klo']);
     
     for itrial=1:length(Klofiles)
         
         %Import .klo file
         KloName=Klofiles(itrial).name;
-        load([Path.KLOimportPath KloName], '-mat');
+        load([Path.RotateKLOPath KloName], '-mat');
         
         %import .mot file
         MotName=[KloName(1:end-4) '_ik.mot'];
