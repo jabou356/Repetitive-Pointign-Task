@@ -31,9 +31,11 @@ for imvt=1:length(data.PartData.Xvideo)-1
     if isfwd
         kfwd=kfwd+1;
         for ichan=1:length(fieldnames(data.OSIMDoF))
+            
          y=fdata.OSIMDoF.(['channel' num2str(ichan)]).data(start:finish-1);    
          channame=data.OSIMDoF.(['channel' num2str(ichan)]).label;       
          data.Forward.(channame)(:,kfwd)=interp1(x,y,1:(length(x)-1)/99:length(x));
+         
         end
             
     else

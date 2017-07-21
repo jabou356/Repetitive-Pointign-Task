@@ -24,7 +24,7 @@ end
 GroupFilemean=[Path.GroupDataPath, 'GroupData_Q.xlsx'];
 GroupFilestd=[Path.GroupDataPath, 'GroupData_Q_std.xlsx'];
 
-for isubject=[12:length(subjectID)]
+for isubject=[15:length(subjectID)] %% je suis rendu sujet 15 Kathryn, Hiram's done 21juillet
     disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
     
     column=ExcelCol(isubject);

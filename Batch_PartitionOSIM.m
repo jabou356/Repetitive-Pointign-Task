@@ -15,7 +15,7 @@ end
 
 
 
-for isubject=12:length(subjectID)
+for isubject=4:length(subjectID)
     disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
     
     SubjectPathRPT;
