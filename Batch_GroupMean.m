@@ -24,7 +24,7 @@ end
 GroupFilemean=[Path.GroupDataPath, 'GroupData_Q.xlsx'];
 GroupFilestd=[Path.GroupDataPath, 'GroupData_Q_std.xlsx'];
 
-for isubject=[15:length(subjectID)] %% je suis rendu sujet 15 Kathryn, Hiram's done 21juillet
+for isubject=[22:length(subjectID)] %% je suis rendu sujet 15 Kathryn, Hiram's done 21juillet
     disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
     
     column=ExcelCol(isubject);
@@ -34,6 +34,10 @@ for isubject=[15:length(subjectID)] %% je suis rendu sujet 15 Kathryn, Hiram's d
     Klofiles=arrayfun(@(x)(x.name),dir([Path.exportPath '*.klo']),'UniformOutput',0);
     
     Klofiles=sort(Klofiles(strncmp(Klofiles,'Trial',5)));
+    
+    if length(Klofiles)>1% To keep just the first and last file
+    Klofiles=([Klofiles(1); Klofiles(end)]);
+    
     
     for itrial = 1 : length(cond)
         %Import .klo file
@@ -81,6 +85,8 @@ for isubject=[15:length(subjectID)] %% je suis rendu sujet 15 Kathryn, Hiram's d
                 char([column, num2str(1),num2str(0), num2str(2)])');
             
         end
+        
+    end
         
         clear data
         
