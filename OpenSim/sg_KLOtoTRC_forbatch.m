@@ -55,14 +55,14 @@ for ci = 1:numel(fName)
         DataRate, CameraRate, NumFrames, NumMarkers, Units, OrigDataRate, OrigDataStartFrame, OrigNumFrames);
     
     % Writing the TRC Column Labels
-    channels = fieldnames(data.VideoData);
+    channels = fieldnames(data.VideoFilt);
     if ~iscell(channels)
         errordlg(['There is no marker in the dataset: ',fName{ci}],'Error in reading the structure');
     end
     tempString1 = sprintf('Frame#\tTime\t');
     tempString2 = sprintf('\n\t\t');
     for cj=1:numel(channels)
-        tempString1 = sprintf('%s%s\t\t\t',tempString1,data.VideoData.(channels{cj}).label);
+        tempString1 = sprintf('%s%s\t\t\t',tempString1,data.VideoFilt.(channels{cj}).label);
         tempString2 = sprintf('%sX%d\tY%d\tZ%d\t',tempString2,cj,cj,cj);
     end
     fprintf(fid, '%s%s\n\n',tempString1,tempString2);
@@ -72,7 +72,7 @@ for ci = 1:numel(fName)
     dataPoints = zeros(NumFrames,3*numel(channels));
     for cj=1:numel(channels)
         colIndex = 1+(cj-1)*3: 3+(cj-1)*3;
-        dataPoints(:,colIndex) = [ data.VideoData.(channels{cj}).xdata data.VideoData.(channels{cj}).ydata data.VideoData.(channels{cj}).zdata];
+        dataPoints(:,colIndex) = [ data.VideoFilt.(channels{cj}).xdata data.VideoFilt.(channels{cj}).ydata data.VideoFilt.(channels{cj}).zdata];
     end
     time  = (0:NumFrames-1)'/DataRate;
     

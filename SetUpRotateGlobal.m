@@ -5,36 +5,38 @@ function [ Origin, Ry ] = SetUpRotateGlobal( path )
 load(path,'-mat');
 
 
-VideoLength=length(fieldnames(data.VideoData));
-TrialLength=length(data.VideoData.channel1.xdata);
-DistalTargetName='DTRG';
-ProximalTargetName='PTRG';
+VideoLength=length(fieldnames(data.VideoFilt));
+TrialLength=length(data.VideoFilt.channel1.xdata);
+DistalTargetName={'DTRG', 'TRGD'};
+ProximalTargetName={'PTRG', 'TRGP'};
 OriginName='CLAV';
 
 %% Find relevent Channels
-%Find Proximal and Distal Targets channels in VideoData
+%Find Proximal and Distal Targets channels in VideoFilt
 for i=VideoLength:-1:1
-    isTRGD(i)=strcmp(data.VideoData.(['channel' num2str(i)]).label,DistalTargetName);
-    isTRGP(i)=strcmp(data.VideoData.(['channel' num2str(i)]).label,ProximalTargetName);
-    isOrigin(i)=strcmp(data.VideoData.(['channel' num2str(i)]).label,OriginName);
+    isTRGD(i)=strcmp(data.VideoFilt.(['channel' num2str(i)]).label,DistalTargetName{1}) +...
+        strcmp(data.VideoFilt.(['channel' num2str(i)]).label,DistalTargetName{2});
+    isTRGP(i)=strcmp(data.VideoFilt.(['channel' num2str(i)]).label,ProximalTargetName{1}) +...
+     strcmp(data.VideoFilt.(['channel' num2str(i)]).label,ProximalTargetName{2});
+    isOrigin(i)=strcmp(data.VideoFilt.(['channel' num2str(i)]).label,OriginName);
 end
 
 TRGDchan=find(isTRGD);
 TRGPchan=find(isTRGP);
 Originchan=find(isOrigin);
 
-Origin(1)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).ydata);
-Origin(2)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).zdata);
-Origin(3)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).xdata);
+Origin(1)=nanmean(data.VideoFilt.(['channel' num2str(Originchan)]).ydata);
+Origin(2)=nanmean(data.VideoFilt.(['channel' num2str(Originchan)]).zdata);
+Origin(3)=nanmean(data.VideoFilt.(['channel' num2str(Originchan)]).xdata);
 
 
 %% Defining the wanted X axis (TRGP to TRGD) in the current global coordinates
 %[X Y Z] vector joining the two targets. It is our final X axis. Mean of 
 %static trial to minimize noise.
 
-X1Vector(1)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).ydata-data.VideoData.(['channel' num2str(TRGPchan)]).ydata);
-X1Vector(2)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).zdata-data.VideoData.(['channel' num2str(TRGPchan)]).zdata);
-X1Vector(3)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).xdata-data.VideoData.(['channel' num2str(TRGPchan)]).xdata);
+X1Vector(1)=nanmean(data.VideoFilt.(['channel' num2str(TRGDchan)]).ydata-data.VideoFilt.(['channel' num2str(TRGPchan)]).ydata);
+X1Vector(2)=nanmean(data.VideoFilt.(['channel' num2str(TRGDchan)]).zdata-data.VideoFilt.(['channel' num2str(TRGPchan)]).zdata);
+X1Vector(3)=nanmean(data.VideoFilt.(['channel' num2str(TRGDchan)]).xdata-data.VideoFilt.(['channel' num2str(TRGPchan)]).xdata);
 
 X1VectorNorm=norm([X1Vector(1) X1Vector(2) X1Vector(3)]); 
 X1UnitVector=[X1Vector(1)/X1VectorNorm X1Vector(2)/X1VectorNorm X1Vector(3)/X1VectorNorm];
