@@ -1,5 +1,7 @@
 clear; clc;
 
+useold=0;
+
 DoF={'ground_thorax_xRotation' 'ground_thorax_yRotation' 'ground_thorax_zRotation'...
     'ground_thorax_xTranslation' 'ground_thorax_yTranslation' 'ground_thorax_zTranslation'...
     'elv_angle' 'shoulder_elv' 'shoulder_rot'...
@@ -20,18 +22,35 @@ end
 
 
 
-for isubject=1:length(subjectID)%:length(subjectID)
+for isubject=[3, 15]
     disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
     
     SubjectPathRPT;
     
+    if useold==1
+       
+    Klofiles=dir([Path.exportPath '*.klo']);
+        
+    else
+        
     Klofiles=dir([Path.RotateKLOPath '*.klo']);
+    
+    end
     
     for itrial=1:length(Klofiles)
         
         %Import .klo file
         KloName=Klofiles(itrial).name;
+        
+        if useold == 1
+          
+        load([Path.exportPath KloName], '-mat');
+
+        else
+            
         load([Path.RotateKLOPath KloName], '-mat');
+        
+        end
         
         %import .mot file
         MotName=[KloName(1:end-4) '_ik.mot'];
