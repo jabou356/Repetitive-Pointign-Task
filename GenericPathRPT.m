@@ -9,18 +9,23 @@ if machinetype == 1
     
     if strcmp(projet,'Kathryn')
         
-        Path.OpensimGenericModel=[Path.OpensimSetupJB,'Humerothoracic_wscapula.osim'];
+        Path.OpensimGenericModel=[Path.OpensimSetupJB,'Humerothoracic_wscapula - Kathryn.osim'];
         
     else
         
-        Path.OpensimGenericModel=[Path.OpensimSetupJB,'Humerothoracic_wscapula - Kathryn.osim'];
+        Path.OpensimGenericModel=[Path.OpensimSetupJB,'Humerothoracic_wscapula.osim'];
         
     end
     
     Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling - ' projet '.xml'];
     Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];
+    
+    Path.OpensimGenericIKtrunk=[Path.OpensimSetupJB,'Conf_IK_trunk.xml'];
+    Path.OpensimGenericIKtrunkmot=[Path.OpensimSetupJB,'Conf_IK_wmot.xml'];
+
+    
     Path.OpensimGenericBK=[Path.OpensimSetupJB,'Conf_BK.xml'];
-    Path.GroupDataPath=[Path.ProjectPath '\GroupData\', projet, '\'];
+    Path.GroupDataPath=[Path.ProjectPath '\GroupData\MegaDatabase\'];
     
 elseif machinetype == 2
     
@@ -30,6 +35,6 @@ elseif machinetype == 2
     Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling.xml'];
     Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];
     Path.OpensimGenericBK=[Path.OpensimSetupJB,'Conf_BK.xml'];
-    Path.GroupDataPath=[Path.ProjectPath '/GroupData/', projet, '/'];
+    Path.GroupDataPath=[Path.ProjectPath '/GroupData/MegaDatabase/'];
     
 end
