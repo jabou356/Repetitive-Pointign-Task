@@ -1,4 +1,4 @@
-clear clc
+clear; clc;
 
 GenericPathRPT
 
@@ -15,7 +15,7 @@ end
 
 
 
-for isubject=4:length(subjectID)
+for isubject=[3, 15]
     disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
     
     SubjectPathRPT;
@@ -26,6 +26,7 @@ for isubject=4:length(subjectID)
     for itrial = 1 : length(Klofiles)
         %Import .klo file
         KloName=Klofiles(itrial).name;
+        
         if ~strcmp(KloName,'static.klo')
         load([Path.exportPath KloName], '-mat', 'data');
         
