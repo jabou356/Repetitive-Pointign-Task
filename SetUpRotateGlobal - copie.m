@@ -7,34 +7,34 @@ load(path,'-mat');
 
 VideoLength=length(fieldnames(data.VideoData));
 TrialLength=length(data.VideoData.channel1.xdata);
-DistalTargetName='TRGD';
-ProximalTargetName='TRGP';
+DistalTargetName='DTRG';
+ProximalTargetName='PTRG';
 OriginName='CLAV';
 
 %% Find relevent Channels
 %Find Proximal and Distal Targets channels in VideoData
 for i=VideoLength:-1:1
-    s=['isTRGD(' num2str(i) ')=strcmp(data.VideoData.channel' num2str(i) '.label,DistalTargetName);'];eval(s);
-    s=['isTRGP(' num2str(i) ')=strcmp(data.VideoData.channel' num2str(i) '.label,ProximalTargetName);'];eval(s);
-    s=['isOrigin(' num2str(i) ')=strcmp(data.VideoData.channel' num2str(i) '.label,OriginName);'];eval(s);
+    isTRGD(i)=strcmp(data.VideoData.(['channel' num2str(i)]).label,DistalTargetName);
+    isTRGP(i)=strcmp(data.VideoData.(['channel' num2str(i)]).label,ProximalTargetName);
+    isOrigin(i)=strcmp(data.VideoData.(['channel' num2str(i)]).label,OriginName);
 end
 
 TRGDchan=find(isTRGD);
 TRGPchan=find(isTRGP);
 Originchan=find(isOrigin);
 
-s=['Origin(1)=mean(data.VideoData.channel' num2str(Originchan) '.ydata);'];eval(s);
-s=['Origin(2)=mean(data.VideoData.channel' num2str(Originchan) '.zdata);'];eval(s);
-s=['Origin(3)=mean(data.VideoData.channel' num2str(Originchan) '.xdata);'];eval(s);
+Origin(1)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).ydata);
+Origin(2)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).zdata);
+Origin(3)=nanmean(data.VideoData.(['channel' num2str(Originchan)]).xdata);
 
 
 %% Defining the wanted X axis (TRGP to TRGD) in the current global coordinates
 %[X Y Z] vector joining the two targets. It is our final X axis. Mean of 
 %static trial to minimize noise.
 
-s=['X1Vector(1)=mean(data.VideoData.channel' num2str(TRGDchan) '.ydata-data.VideoData.channel' num2str(TRGPchan) '.ydata);'];eval(s);
-s=['X1Vector(2)=mean(data.VideoData.channel' num2str(TRGDchan) '.zdata-data.VideoData.channel' num2str(TRGPchan) '.zdata);'];eval(s);
-s=['X1Vector(3)=mean(data.VideoData.channel' num2str(TRGDchan) '.xdata-data.VideoData.channel' num2str(TRGPchan) '.xdata);'];eval(s);
+X1Vector(1)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).ydata-data.VideoData.(['channel' num2str(TRGPchan)]).ydata);
+X1Vector(2)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).zdata-data.VideoData.(['channel' num2str(TRGPchan)]).zdata);
+X1Vector(3)=nanmean(data.VideoData.(['channel' num2str(TRGDchan)]).xdata-data.VideoData.(['channel' num2str(TRGPchan)]).xdata);
 
 X1VectorNorm=norm([X1Vector(1) X1Vector(2) X1Vector(3)]); 
 X1UnitVector=[X1Vector(1)/X1VectorNorm X1Vector(2)/X1VectorNorm X1Vector(3)/X1VectorNorm];
