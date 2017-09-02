@@ -14,7 +14,7 @@ for i=1:length(d)
 end
 
 
-for isubject=9:length(subjectID)
+for isubject=3%1:length(subjectID)
 disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
 
     SubjectPathRPT;
@@ -27,13 +27,16 @@ disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject)
     
     Klofiles=dir([Path.KLOimportPath '*.klo']);
     
-    if strcmp(projet, 'Asha') % IF it is Asha, take the target position from one trial because they were not OK during static
+    if strcmp(projet, 'Asha') || strcmp(projet, 'Jason') % IF it is Asha or Jason, take the target position from one trial because they were not OK during static
         for itrial=1:length(Klofiles)
             KloName=Klofiles(itrial).name;
             if strncmp(KloName, 'Trial', 5)
                 break
             end
-        end         
+        end
+        
+     rawfilt_OBLJB('filesnames', [Path.KLOimportPath, KloName], 'do_emg',0,'do_kin',1,'kin_fc',[15],'kin_chan',[-1],'kin_visu',[0]); % Filter kinematics data (15Hz lowpass)
+
     [~, Ry]=SetUpRotateGlobal([Path.KLOimportPath, KloName]);
     end
     
