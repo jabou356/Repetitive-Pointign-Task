@@ -25,7 +25,10 @@ if machinetype == 1
 
     
     Path.OpensimGenericBK=[Path.OpensimSetupJB,'Conf_BK.xml'];
-    Path.GroupDataPath=[Path.ProjectPath '\GroupData\MegaDatabase\'];
+    
+    Path.GroupPath=[Path.ProjectPath '\GroupData\'];
+    Path.GroupDataPath=[Path.GroupPath 'MegaDatabase\'];
+    Path.JBAnalyse=[Path.GroupPath 'Analysis\Jason\'];
     
 elseif machinetype == 2
     
@@ -35,6 +38,9 @@ elseif machinetype == 2
     Path.OpensimGenericScale=[Path.OpensimSetupJB,'Conf_scaling.xml'];
     Path.OpensimGenericIK=[Path.OpensimSetupJB,'Conf_IK.xml'];
     Path.OpensimGenericBK=[Path.OpensimSetupJB,'Conf_BK.xml'];
-    Path.GroupDataPath=[Path.ProjectPath '/GroupData/MegaDatabase/'];
     
+    
+    Path.GroupPath=[Path.ProjectPath '/GroupData/'];
+    Path.GroupDataPath=[Path.GroupPath 'MegaDatabase/'];
+    Path.JBAnalyse=[Path.GroupPath 'Analysis/Jason/'];    
 end
