@@ -26,10 +26,10 @@ if length(Men) ~= length(Women)
     
 npergroup=min([length(Men), length(Women)]);
 
-Y=Y(SUBJ == Men(1:npergroup) || SUBJ == Women(1:npergroup));
-Sex=Sex(SUBJ == Men(1:npergroup) || SUBJ == Women(1:npergroup));
-Time=Time(SUBJ == Men(1:npergroup) || SUBJ == Women(1:npergroup));
-SUBJ=SUBJ(SUBJ == Men(1:npergroup) || SUBJ == Women(1:npergroup));
+Y=Y(ismember(SUBJ, Men(1:npergroup)) | ismember(SUBJ, Women(1:npergroup)));
+Sex=Sex(ismember(SUBJ, Men(1:npergroup)) | ismember(SUBJ, Women(1:npergroup)));
+Time=Time(ismember(SUBJ, Men(1:npergroup)) | ismember(SUBJ, Women(1:npergroup)));
+SUBJ=SUBJ(ismember(SUBJ, Men(1:npergroup)) | ismember(SUBJ, Women(1:npergroup)));
 
 end
 
