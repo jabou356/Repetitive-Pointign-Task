@@ -4,7 +4,7 @@ do0D=0;
 do1D=1;
 
 if do0D
-signal={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz','CLAVAP','RSHOAP','RELBAP' ,'RWRAAP','RIDXAP','CLAVML','RSHOML','RELBML' ,'RWRAML','RIDXML','CLAVSI','RSHOSI','RELBSI' ,'RWRASI','RIDXSI'};
+signal = {'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz','CLAVAP','RSHOAP','RELBAP' ,'RWRAAP','RIDXAP','CLAVML','RSHOML','RELBML' ,'RWRAML','RIDXML','CLAVSI','RSHOSI','RELBSI' ,'RWRASI','RIDXSI'};
 statistic={'Mean', 'SD', 'CV'}; %Mean, SD, CV,
 variable={'ROMFwd', 'MeanPosFwd', 'ROMBwd', 'MeanPosBwd'}; % ROMFwd, MeanPosFwd, ROMBwd, MeanPosBwd
 end
@@ -22,7 +22,7 @@ if do0D==1
 load([Path.JBAnalyse, 'GroupData0D.mat']);
 end
 
-if do1D ==1
+if do1D == 1
     load([Path.JBAnalyse, 'GroupData1D.mat']);
 end
 
