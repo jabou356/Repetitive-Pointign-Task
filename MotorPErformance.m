@@ -74,7 +74,7 @@ for imvt = size(data.Forward.RELB.ydata,2):-1:1
     % straight line). x normalised forward distance, PTRG = 0%, DTRG = 100%
     data.Forward.RIDX.ynorm = y;
     data.Forward.RIDX.znorm = z;
-    data.Forward.RIDX.xnorm = (x - TRGP.X) / (TRGD.X - TRGP.X) * 100;
+    data.Forward.RIDX.xnorm = (data.Forward.RIDX.xdata - TRGP.X) / (TRGD.X - TRGP.X) * 100;
     
     
 end % for imvt
@@ -96,7 +96,7 @@ for imvt = size(data.Backward.RELB.ydata,2):-1:1
     % straight line). x normalised backward distance, DTRG = 0%, PTRG = 100%
     data.Backward.RIDX.ynorm = y;
     data.Backward.RIDX.znorm = z;
-    data.Backward.RIDX.xnorm = -(x - TRGD.X) / (TRGD.X - TRGP.X) * 100;
+    data.Backward.RIDX.xnorm = -(data.Backward.RIDX.xdata - TRGD.X) / (TRGD.X - TRGP.X) * 100;
     
     
 end % for imvt
