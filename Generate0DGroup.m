@@ -302,7 +302,7 @@ for isubject=1:length(subjectID) % for all subject
                 clear meanposfwd meanposbwd romfwd rombwd
                 
                 
-                if isignal == 2 % If we are working with the elbow marker, add normalised data
+                if isignal == 3 % If we are working with the elbow marker, add normalised data
                     
                     towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
@@ -355,15 +355,15 @@ for isubject=1:length(subjectID) % for all subject
                 if isignal == 5 % If we are working with the Index finger marker, add normalised data
                     
                     % Info for mean, SD, CV normX
-                    towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1normxMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'NormAP'], 'Mean'};
                     
-                    towrite1normySD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1normxSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'NormAP'], 'SD'};
                     
-                    towrite1normyCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1normxCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'NormAP'], 'CV'};
                     
@@ -381,28 +381,28 @@ for isubject=1:length(subjectID) % for all subject
                         [ChannameMKR{isignal}, 'NormSI'], 'CV'};
                     
                     % Info for mean, SD, CV normZ
-                    towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1normzMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'NormML'], 'Mean'};
                     
-                    towrite1normySD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1normzSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'NormML'], 'SD'};
                     
-                    towrite1normyCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1normzCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'NormML'], 'CV'};
                     
                     % Info for mean, SD, CV VectDistance (Distance from target)
-                    towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1dMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'VectDist'], 'Mean'};
                     
-                    towrite1normySD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1dSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'VectDist'], 'SD'};
                     
-                    towrite1normyCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    towrite1dCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
                         [ChannameMKR{isignal}, 'VectDist'], 'CV'};
                     
@@ -420,9 +420,9 @@ for isubject=1:length(subjectID) % for all subject
                         towrite2normzSD=nan(4,1);
                         towrite2normzCV=nan(4,1);
                         
-                        towrite2normdMEAN=nan(4,1);
-                        towrite2normdSD=nan(4,1);
-                        towrite2normdCV=nan(4,1);
+                        towrite2dMEAN=nan(4,1);
+                        towrite2dSD=nan(4,1);
+                        towrite2dCV=nan(4,1);
                         
                     else %if OK
                         
@@ -441,8 +441,8 @@ for isubject=1:length(subjectID) % for all subject
                         romfwd.normZ=max(data.Forward.(ChannameMKR{isignal}).znorm,[],1)-min(data.Forward.(ChannameMKR{isignal}).znorm,[],1);  % range of motion forward movement (x)
                         rombwd.normZ=max(data.Backward.(ChannameMKR{isignal}).znorm,[],1)-min(data.Backward.(ChannameMKR{isignal}).znorm,[],1);  % range of motion backward movement (x)
                         
-                        meanposfwd.d=data.Forward.(ChannameMKR{isignal}).vectdist(:,end);  % Vectorial distance between the index marker and the target (end of the forward movement)
-                        meanposbwd.d=data.Backward.(ChannameMKR{isignal}).vectdist(:,end);  % % Vectorial distance between the index marker and the target (end of the backward movement)
+                        meanposfwd.d=data.Forward.(ChannameMKR{isignal}).vectdist(end,:);  % Vectorial distance between the index marker and the target (end of the forward movement)
+                        meanposbwd.d=data.Backward.(ChannameMKR{isignal}).vectdist(end,:);  % % Vectorial distance between the index marker and the target (end of the backward movement)
                         
                         
                         %if ok: MEAN of valid movements mean position and ROM
@@ -468,7 +468,7 @@ for isubject=1:length(subjectID) % for all subject
                         towrite2normzSD=[std(meanposfwd.normZ(~isnan(meanposfwd.normZ))); std(romfwd.normZ(~isnan(romfwd.normZ))); ...
                             std(meanposbwd.normZ(~isnan(meanposbwd.normZ))); std(rombwd.normZ(~isnan(rombwd.normZ)))]; % [sd of meanposfwd.x, sd of romfwd.x, sd of meanposbwd.x, sd of rombwd.x]
                         
-                        towrite2normdSD=[std(meanposfwd.d(~isnan(meanposfwd.d))); nan; ...
+                        towrite2dSD=[std(meanposfwd.d(~isnan(meanposfwd.d))); nan; ...
                             std(meanposbwd.d(~isnan(meanposbwd.d))); nan]; % [sd of meanposfwd.x, sd of romfwd.x, sd of meanposbwd.x, sd of rombwd.x]
                         
                         %if ok: CV of valid movements mean position and ROM
@@ -481,7 +481,7 @@ for isubject=1:length(subjectID) % for all subject
                         towrite2normzCV=[std(meanposfwd.normZ(~isnan(meanposfwd.normZ)))/mean(romfwd.normZ(~isnan(romfwd.normZ))); std(romfwd.normZ(~isnan(romfwd.normZ)))/mean(romfwd.normZ(~isnan(romfwd.normZ))); ...
                             std(meanposbwd.normZ(~isnan(meanposbwd.normZ)))/mean(rombwd.normZ(~isnan(rombwd.normZ))); std(rombwd.normZ(~isnan(rombwd.normZ)))/mean(rombwd.normZ(~isnan(rombwd.normZ)))]; % [cv of meanposfwd.x, cv of romfwd.x, cv of meanposbwd.x, cv of rombwd.x]
                         
-                        towrite2normdCV=[std(meanposfwd.d(~isnan(meanposfwd.d)))/mean(meanposfwd.d(~isnan(meanposfwd.d))); nan; ...
+                        towrite2dCV=[std(meanposfwd.d(~isnan(meanposfwd.d)))/mean(meanposfwd.d(~isnan(meanposfwd.d))); nan; ...
                             std(meanposbwd.d(~isnan(meanposbwd.d)))/mean(meanposbwd.d(~isnan(meanposbwd.d))); nan]; % [cv of meanposfwd.x, cv of romfwd.x, cv of meanposbwd.x, cv of rombwd.x]
                         
                     end
@@ -507,12 +507,12 @@ for isubject=1:length(subjectID) % for all subject
                     fprintf(fid,format1,towrite1normzCV{:}); % Print trial info CV normY
                     fprintf(fid,format2,towrite2normzCV');  % PRint trial CV normy data
                     
-                    fprintf(fid,format1,towrite1normdMEAN{:}); % Print trial info MEAN normY
-                    fprintf(fid,format2,towrite2normdMEAN');  % PRint trial MEAN normy data
-                    fprintf(fid,format1,towrite1normdSD{:}); % Print trial info SD normY
-                    fprintf(fid,format2,towrite2normdSD');  % PRint trial SD normy data
-                    fprintf(fid,format1,towrite1normdCV{:}); % Print trial info CV normY
-                    fprintf(fid,format2,towrite2normdCV');  % PRint trial CV normy data
+                    fprintf(fid,format1,towrite1dMEAN{:}); % Print trial info MEAN normY
+                    fprintf(fid,format2,towrite2dMEAN');  % PRint trial MEAN normy data
+                    fprintf(fid,format1,towrite1dSD{:}); % Print trial info SD normY
+                    fprintf(fid,format2,towrite2dSD');  % PRint trial SD normy data
+                    fprintf(fid,format1,towrite1dCV{:}); % Print trial info CV normY
+                    fprintf(fid,format2,towrite2dCV');  % PRint trial CV normy data
                     
                     
                     
