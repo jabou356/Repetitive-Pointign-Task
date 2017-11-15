@@ -19,8 +19,8 @@ SUBJ=[Megadatabase(strcmp(signal,[Megadatabase.Signal]) & ...
     ~isnan([Megadatabase.ROMFwd])).SubjectID];
 
 %% Validate number of Men and Women
-Men=unique(SUBJ(Sex==1)); Men = Men(randperm(length(Men)));
-Women=unique(SUBJ(Sex==2)); Women = Women(randperm(length(Women)));
+Men=unique(SUBJ(Sex==1));
+Women=unique(SUBJ(Sex==2)); 
 
 if length(Men) ~= length(Women)
     
