@@ -1,11 +1,10 @@
 clear; clc;
 
-dorelevantMKR=1;
+dorelevantMKR=0;
 doDOF=1;
 
 cond={'NF','FT'};
-ChannameImport(:)={'RIDX','RWRA','RELB','RSHO','CLAV','elv_angle', 'shoulder_elv', 'elbow_flexion','ground_thorax_yRotation', 'ground_thorax_zRotation'};% 'ShoulderRot',...
-
+ChannameImport(:)={'RIDX','RWRA','RELB','RSHO','CLAV','elv_angle', 'shoulder_elv', 'elbow_flexion','ground_thorax_yRotation', 'ground_thorax_zRotation', 'ground_thorax_xRotation', 'shoulder_rot'};
 GenericPathRPT
 
 d=dir(Path.DataPath);
@@ -20,7 +19,7 @@ for i=1:length(d)
 end
 
 
-for isubject = [1, 4, 11, 16]
+for isubject = 1:length(subjectID)
     disp(['Processing subject #' num2str(subjectID(isubject)) ' (' num2str(isubject) ' out of ' num2str(length(subjectID)) ')'])
         
     SubjectPathRPT;
