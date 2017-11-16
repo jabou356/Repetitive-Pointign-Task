@@ -34,7 +34,7 @@ end
 %(1) Conduct non-parametric test:
 rng(0)     %set the random number generator seed
 alpha      = 0.05;
-iterations = 1000;
+iterations = 10000;
 FFn        = spm1d.stats.nonparam.anova2onerm(Y, Sex, Time, SUBJ);
 nonparam       = FFn.inference(alpha, 'iterations', iterations);
 disp_summ(nonparam)
