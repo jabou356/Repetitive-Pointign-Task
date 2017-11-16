@@ -4,13 +4,13 @@ do0D=1;
 do1D=0;
 
 if do0D
-signal = {'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz','RSHOAP','RELBAP' ,'RWRAAP','RIDXAP','RSHOML','RELBML' ,'RWRAML','RIDXML','RSHOSI','RELBSI' ,'RWRASI','RIDXSI'};
+signal = {'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz','TrunkRx', 'ShoulderRot','RIDXNormAP','RIDXNormML','RIDXNormSI','RELBNormSI','RIDXVectDist'};
 statistic={'Mean', 'SD', 'CV'}; %Mean, SD, CV,
 variable={'ROMFwd', 'MeanPosFwd', 'ROMBwd', 'MeanPosBwd'}; % ROMFwd, MeanPosFwd, ROMBwd, MeanPosBwd
 end
 
 if do1D
-    signal={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz','RSHOAP','RELBAP' ,'RWRAAP','RIDXAP','RSHOML','RELBML' ,'RWRAML','RIDXML','RSHOSI','RELBSI' ,'RWRASI','RIDXSI'};
+    signal={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz','TrunkRx', 'ShoulderRot','RIDXNormAP','RIDXNormML','RIDXNormSI','RELBNormSI','RIDXVectDist'};
 statistic={'Mean', 'SD', }; %Mean, SD, CV,
 variable={'Forward', 'Backward'}; % ROMFwd, MeanPosFwd, ROMBwd, MeanPosBwd
 end

@@ -1,9 +1,9 @@
 clear; clc;
 cond={'NF','FT'};
-ChannameOSIM(:)={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz'}; % Name of DoF in the MegaDatabase
+ChannameOSIM(:)={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz','TrunkRx', 'ShoulderRot'}; % Name of DoF in the MegaDatabase
 ChannameMKR(:)={'CLAV','RSHO','RELB' ,'RWRA','RIDX'}; % Name of relevant markers in the MegaDatabase (and Result folder)
 
-ChannameOSIMImport(:)={'elv_angle', 'shoulder_elv',  'elbow_flexion', 'ground_thorax_yRotation', 'ground_thorax_zRotation'}; % Name of DoF in the result folder
+ChannameOSIMImport(:)={'elv_angle', 'shoulder_elv',  'elbow_flexion', 'ground_thorax_yRotation', 'ground_thorax_zRotation','ground_thorax_xRotation', 'shoulder_rot'}; % Name of DoF in the result folder
 
 % Get generic Paths
 GenericPathRPT
@@ -220,14 +220,155 @@ for isubject=1:length(subjectID) % for all subject
                 
             end
                 
+        if isignal == 3 % If we are working with the elbow marker, add normalised data
+                    
+                    towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormSI'], 'Mean'};
+                    
+                    towrite1normySD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormSI'], 'SD'};
+                    
+
+                    
+                     if isLEFTflag  % If it is a problematic subject 
+                    
+                    towrite2normyMEAN=nan(200,1);
+                    towrite2normySD=nan(200,1);
+                    
+                else %if ok: mean of valid movements (1:100 = forward, 101:200= backward)
+                    
+                    towrite2normyMEAN=[mean(data.Forward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).ynorm(1,:))),2);...
+                        mean(data.Backward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).ynorm(1,:))),2)];
+                    
+                    towrite2normySD=[std(data.Forward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).ynorm(1,:))),0,2);...
+                        std(data.Backward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).ynorm(1,:))),0,2)];
+
+                    
+                end
+                  
+                    
+                    fprintf(fid,format1,towrite1normyMEAN{:}); % Print trial info MEAN normY
+                    fprintf(fid,format2,towrite2normyMEAN');  % PRint trial MEAN normy data
+                    fprintf(fid,format1,towrite1normySD{:}); % Print trial info SD normY
+                    fprintf(fid,format2,towrite2normySD');  % PRint trial SD normy data
+                   
+                    
+                end
                 
+                if isignal == 5 % If we are working with the Index finger marker, add normalised data
+                    
+                    towrite1normxMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormAP'], 'Mean'};
+                    
+                    towrite1normxSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormAP'], 'SD'};
+                    
+                    towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormSI'], 'Mean'};
+                    
+                    towrite1normySD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormSI'], 'SD'};
+                    
+                    towrite1normzMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormML'], 'Mean'};
+                    
+                    towrite1normzSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'NormML'], 'SD'};
+                    
+                    towrite1dMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'VectDist'], 'Mean'};
+                    
+                    towrite1dSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                        Info.sex, Info.age, Info.height, Info.weight,...
+                        [ChannameMKR{isignal}, 'VectDist'], 'SD'};
+
+                    
+                     if isLEFTflag  % If it is a problematic subject 
+                    
+                    towrite2normxMEAN=nan(200,1);
+                    towrite2normxSD=nan(200,1);
+                    
+                    towrite2normyMEAN=nan(200,1);
+                    towrite2normySD=nan(200,1);
+                    
+                    towrite2normzMEAN=nan(200,1);
+                    towrite2normzSD=nan(200,1);
+                    
+                    towrite2dMEAN=nan(200,1);
+                    towrite2dSD=nan(200,1);
+                    
+                else %if ok: mean of valid movements (1:100 = forward, 101:200= backward)
+                    
+                    towrite2normxMEAN=[mean(data.Forward.(ChannameMKR{isignal}).xnorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).xnorm(1,:))),2);...
+                        mean(data.Backward.(ChannameMKR{isignal}).xnorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).xnorm(1,:))),2)];
+                    
+                    towrite2normxSD=[std(data.Forward.(ChannameMKR{isignal}).xnorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).xnorm(1,:))),0,2);...
+                        std(data.Backward.(ChannameMKR{isignal}).xnorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).xnorm(1,:))),0,2)];
+                    
+                    towrite2normyMEAN=[mean(data.Forward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).ynorm(1,:))),2);...
+                        mean(data.Backward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).ynorm(1,:))),2)];
+                    
+                    towrite2normySD=[std(data.Forward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).ynorm(1,:))),0,2);...
+                        std(data.Backward.(ChannameMKR{isignal}).ynorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).ynorm(1,:))),0,2)];
+                    
+                    towrite2normzMEAN=[mean(data.Forward.(ChannameMKR{isignal}).znorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).znorm(1,:))),2);...
+                        mean(data.Backward.(ChannameMKR{isignal}).znorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).znorm(1,:))),2)];
+                    
+                    towrite2normzSD=[std(data.Forward.(ChannameMKR{isignal}).znorm(:,~isnan(data.Forward.(ChannameMKR{isignal}).znorm(1,:))),0,2);...
+                        std(data.Backward.(ChannameMKR{isignal}).znorm(:,~isnan(data.Backward.(ChannameMKR{isignal}).znorm(1,:))),0,2)];
+                    
+                    towrite2dMEAN=[mean(data.Forward.(ChannameMKR{isignal}).vectdist(:,~isnan(data.Forward.(ChannameMKR{isignal}).vectdist(1,:))),2);...
+                        mean(data.Backward.(ChannameMKR{isignal}).vectdist(:,~isnan(data.Backward.(ChannameMKR{isignal}).vectdist(1,:))),2)];
+                    
+                    towrite2dSD=[std(data.Forward.(ChannameMKR{isignal}).vectdist(:,~isnan(data.Forward.(ChannameMKR{isignal}).vectdist(1,:))),0,2);...
+                        std(data.Backward.(ChannameMKR{isignal}).vectdist(:,~isnan(data.Backward.(ChannameMKR{isignal}).vectdist(1,:))),0,2)];
+
+                    
+                end
+                  
+                    
+                    fprintf(fid,format1,towrite1normxMEAN{:}); % Print trial info MEAN normY
+                    fprintf(fid,format2,towrite2normxMEAN');  % PRint trial MEAN normy data
+                    fprintf(fid,format1,towrite1normxSD{:}); % Print trial info SD normY
+                    fprintf(fid,format2,towrite2normxSD');  % PRint trial SD normy data
+                    
+                    fprintf(fid,format1,towrite1normyMEAN{:}); % Print trial info MEAN normY
+                    fprintf(fid,format2,towrite2normyMEAN');  % PRint trial MEAN normy data
+                    fprintf(fid,format1,towrite1normySD{:}); % Print trial info SD normY
+                    fprintf(fid,format2,towrite2normySD');  % PRint trial SD normy data
+                    
+                    fprintf(fid,format1,towrite1normzMEAN{:}); % Print trial info MEAN normY
+                    fprintf(fid,format2,towrite2normzMEAN');  % PRint trial MEAN normy data
+                    fprintf(fid,format1,towrite1normzSD{:}); % Print trial info SD normY
+                    fprintf(fid,format2,towrite2normzSD');  % PRint trial SD normy data
+                    
+                    fprintf(fid,format1,towrite1dMEAN{:}); % Print trial info MEAN normY
+                    fprintf(fid,format2,towrite2dMEAN');  % PRint trial MEAN normy data
+                    fprintf(fid,format1,towrite1dSD{:}); % Print trial info SD normY
+                    fprintf(fid,format2,towrite2dSD');  % PRint trial SD normy data
+                   
+                    
+                end
+                   
+                    
+                    
+                end        
             
             
         end
         
     end
     
-end
+
 fclose(fid);
 
 
