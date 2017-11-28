@@ -1,4 +1,4 @@
-ChannameOSIM(:)={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz'}; % Name of DoF in the MegaDatabase
+ChannameOSIM(:)={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRx', 'TrunkRy', 'TrunkRz'}; % Name of DoF in the MegaDatabase
 Variables(:)={'AveragePos', 'ROM'};
 
 kH=0;

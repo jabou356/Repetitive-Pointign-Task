@@ -18,9 +18,9 @@
 %% Define variables and coonditions of interest
 clear; clc;
 cond={'NF','FT'};
-ChannameOSIMImport(:)={'elv_angle', 'shoulder_elv',  'elbow_flexion', 'ground_thorax_yRotation', 'ground_thorax_zRotation'}; % Name of DoF in the result folder
+ChannameOSIMImport(:)={'elv_angle', 'shoulder_elv',  'elbow_flexion', 'ground_thorax_xRotation', 'ground_thorax_yRotation', 'ground_thorax_zRotation'}; % Name of DoF in the result folder
 
-ChannameOSIM(:)={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRy', 'TrunkRz'}; % Name of DoF in the MegaDatabase
+ChannameOSIM(:)={'Shoulderplane', 'ShoulderElev', 'ElbowFlex','TrunkRx', 'TrunkRy', 'TrunkRz'}; % Name of DoF in the MegaDatabase
 ChannameMKR(:)={'CLAV','RSHO','RELB' ,'RWRA','RIDX'}; % Name of relevant markers in the MegaDatabase (and Result folder)
 
 % Get generic Paths
