@@ -16,7 +16,11 @@ for iline=size(temp.data,1):-1:1
     Megadatabase(iline).Height = str2double(temp.textdata(iline+1,8));
     Megadatabase(iline).Weight = str2double(temp.textdata(iline+1,9));
     Megadatabase(iline).Signal = temp.textdata(iline+1,10);
-    Megadatabase(iline).Stat = temp.textdata(iline+1,11);
+    Megadatabase(iline).TimingFwd = temp.textdata(iline+1,11);
+    Megadatabase(iline).TimingErrFwd = temp.textdata(iline+1,12);
+    Megadatabase(iline).TimingBwd = temp.textdata(iline+1,13);
+    Megadatabase(iline).TimingErrBwd = temp.textdata(iline+1,14);
+    Megadatabase(iline).Stat = temp.textdata(iline+1,15);
     
     Megadatabase(iline).MeanPosFwd = temp.data(iline,1);    
     Megadatabase(iline).ROMFwd = temp.data(iline,2);

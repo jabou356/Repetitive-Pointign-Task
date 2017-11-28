@@ -17,7 +17,7 @@ if ~exist(GroupFile,'file')
     fid=fopen(GroupFile,'w');
     
     headers={'Subject', 'SID', 'Time', 'Project', 'Endurance time', 'Sex'...
-        , 'Age', 'Height', 'Weight', 'Signal', 'Stat', 'MeanPositionFwd', 'ROMFwd', 'MeanPositionBwd', 'ROMBwd'};
+        , 'Age', 'Height', 'Weight', 'Signal', 'Mean timingFWD', 'abs timing errorFWD', 'Mean timingBWD', 'abs timing errorBWD', 'Stat', 'MeanPositionFwd', 'ROMFwd', 'MeanPositionBwd', 'ROMBwd'};
     
     fprintf(fid, '%s\t',headers{:});
     fprintf(fid, '\r\n');
@@ -28,6 +28,10 @@ end
 
 % Open the MegaDatabase0D to add data
 fid=fopen(GroupFile,'a');
+
+% Give format spect and data to print in the GROUPMEAN file
+                format1='%s\t %i\t %i\t %s\t %f\t %s\t %f\t %f\t %f\t %s\t %f\t %f\t %f\t %f\t %s\t';
+                format2='%f\t%f\t%f\t%f\r\n';
 
 %% For the selected Project (in GenericPathRPT.m): Identify the number of subjects and attribute SID
 d=dir(Path.DataPath);
@@ -72,21 +76,22 @@ for isubject=1:length(subjectID) % for all subject
             
             for isignal = 1:length(ChannameOSIMImport)
                 
-                % Give format spect and data to print in the GROUPMEAN file
-                format1='%s\t %i\t %i\t %s\t %f\t %s\t %f\t %f\t %f\t %s\t %s\t';
-                format2='%f\t%f\t%f\t%f\r\n';
                 
-                % Write data identifier (subject, project, trial, signal,
-                % stat, etc.)
-                towrite1={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
-                    Info.sex, Info.age, Info.height, Info.weight,...
-                    ChannameOSIM{isignal}, 'Mean'};
-                
+                  
                 if isLEFTflag || isIKflag  % If it is a problematic subject or IK residual error > limit (see IKresidual script): nan
                     
                     towrite2=nan(4,1);
                     
+                    timingfwd = nan; 
+                    timeerrfwd = nan; 
+                    timingbwd = nan;
+                    timeerrbwd = nan;
+                    
                 else %if ok: mean of valid movements mean position and ROM
+                    
+                    %compute timing variables
+                    [timingfwd, timeerrfwd, timingbwd, timeerrbwd]=TimingError(data);
+                    
                     
                     meanposfwd=mean(data.Forward.(ChannameOSIMImport{isignal}),1); % mean position forward movement
                     meanposbwd=mean(data.Backward.(ChannameOSIMImport{isignal}),1); % mean position backward movement
@@ -98,6 +103,12 @@ for isubject=1:length(subjectID) % for all subject
                     
                 end
                 
+                % Write data identifier (subject, project, trial, signal,
+                % stat, etc.)
+                towrite1={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
+                    Info.sex, Info.age, Info.height, Info.weight,...
+                    ChannameOSIM{isignal}, timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
+                
                 fprintf(fid,format1,towrite1{:}); % Print trial info
                 fprintf(fid,format2,towrite2');  % PRint trial data
                 
@@ -108,7 +119,7 @@ for isubject=1:length(subjectID) % for all subject
                 % stat, etc.)
                 towrite1={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    ChannameOSIM{isignal}, 'SD'};
+                    ChannameOSIM{isignal}, timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                 
                 if isLEFTflag || isIKflag % If it is a problematic subject or IK residual error > limit (see IKresidual script): nan
                     
@@ -135,7 +146,7 @@ for isubject=1:length(subjectID) % for all subject
                 % stat, etc.)
                 towrite1={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    ChannameOSIM{isignal}, 'CV'};
+                    ChannameOSIM{isignal}, timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                 
                 if isLEFTflag || isIKflag % If it is a problematic subject or IK residual error > limit (see IKresidual script): nan
                     
@@ -158,23 +169,19 @@ for isubject=1:length(subjectID) % for all subject
             %
             for isignal = 1:length(ChannameMKR) %For marker positions (do xdata, ydata and z data)
                 
-                
-                
-                % Give format spect and data to print in the GROUPMEAN file
-                format1='%s\t %i\t %i\t %s\t %f\t %s\t %f\t %f\t %f\t %s\t %s\t';
-                format2='%f\t%f\t%f\t%f\r\n';
-                
+                            
+                              
                 % Write data identifier (subject, project, trial, signal,
                 % stat, etc.)
                 towrite1x={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'AP'], 'Mean'};
+                    [ChannameMKR{isignal}, 'AP'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                 towrite1y={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'SI'], 'Mean'};
+                    [ChannameMKR{isignal}, 'SI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                 towrite1z={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'ML'], 'Mean'};
+                    [ChannameMKR{isignal}, 'ML'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                 
                 if isLEFTflag  % If it is a problematic subject
                     
@@ -224,13 +231,13 @@ for isubject=1:length(subjectID) % for all subject
                 % stat, etc.)
                 towrite1x={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'AP'], 'SD'};
+                    [ChannameMKR{isignal}, 'AP'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                 towrite1y={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'SI'], 'SD'};
+                    [ChannameMKR{isignal}, 'SI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                 towrite1z={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'ML'], 'SD'};
+                    [ChannameMKR{isignal}, 'ML'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                 
                 if isLEFTflag  % If it is a problematic subject
                     
@@ -265,13 +272,13 @@ for isubject=1:length(subjectID) % for all subject
                 % stat, etc.)
                 towrite1x={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'AP'], 'CV'};
+                    [ChannameMKR{isignal}, 'AP'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                 towrite1y={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'SI'], 'CV'};
+                    [ChannameMKR{isignal}, 'SI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                 towrite1z={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                     Info.sex, Info.age, Info.height, Info.weight,...
-                    [ChannameMKR{isignal}, 'ML'], 'CV'};
+                    [ChannameMKR{isignal}, 'ML'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                 
                 if isLEFTflag % If it is a problematic subject
                     
@@ -306,15 +313,15 @@ for isubject=1:length(subjectID) % for all subject
                     
                     towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormSI'], 'Mean'};
+                        [ChannameMKR{isignal}, 'NormSI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                     
                     towrite1normySD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormSI'], 'SD'};
+                        [ChannameMKR{isignal}, 'NormSI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                     
                     towrite1normyCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormSI'], 'CV'};
+                        [ChannameMKR{isignal}, 'NormSI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                     
                     if isLEFTflag  % If it is a problematic subject
                         
@@ -357,54 +364,54 @@ for isubject=1:length(subjectID) % for all subject
                     % Info for mean, SD, CV normX
                     towrite1normxMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormAP'], 'Mean'};
+                        [ChannameMKR{isignal}, 'NormAP'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                     
                     towrite1normxSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormAP'], 'SD'};
+                        [ChannameMKR{isignal}, 'NormAP'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                     
                     towrite1normxCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormAP'], 'CV'};
+                        [ChannameMKR{isignal}, 'NormAP'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                     
                     % Info for mean, SD, CV normY
                     towrite1normyMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormSI'], 'Mean'};
+                        [ChannameMKR{isignal}, 'NormSI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                     
                     towrite1normySD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormSI'], 'SD'};
+                        [ChannameMKR{isignal}, 'NormSI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                     
                     towrite1normyCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormSI'], 'CV'};
+                        [ChannameMKR{isignal}, 'NormSI'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                     
                     % Info for mean, SD, CV normZ
                     towrite1normzMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormML'], 'Mean'};
+                        [ChannameMKR{isignal}, 'NormML'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                     
                     towrite1normzSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormML'], 'SD'};
+                        [ChannameMKR{isignal}, 'NormML'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                     
                     towrite1normzCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'NormML'], 'CV'};
+                        [ChannameMKR{isignal}, 'NormML'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                     
                     % Info for mean, SD, CV VectDistance (Distance from target)
                     towrite1dMEAN={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'VectDist'], 'Mean'};
+                        [ChannameMKR{isignal}, 'VectDist'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'Mean'};
                     
                     towrite1dSD={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'VectDist'], 'SD'};
+                        [ChannameMKR{isignal}, 'VectDist'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'SD'};
                     
                     towrite1dCV={char([projet, num2str(subjectID(isubject))]), isubject, itrial, projet,  Info.endurance, ...
                         Info.sex, Info.age, Info.height, Info.weight,...
-                        [ChannameMKR{isignal}, 'VectDist'], 'CV'};
+                        [ChannameMKR{isignal}, 'VectDist'], timingfwd, timeerrfwd, timingbwd, timeerrbwd, 'CV'};
                     
                     if isLEFTflag  % If it is a problematic subject
                         
