@@ -1,6 +1,14 @@
 function [pind,data] = clean_dataRPT(data,signal,name)
 % Clean_data allows to select data from the plot and replace it (by NaN, 0 or [])
 % Input data should be nframe * observations
+%
+% Bad data selector is a brush, so you can click and slide over all data
+% you want to remove at once. Click on Update to see the data without the
+% bad movements. Click on Close once you are happy with the remaining data.
+%
+% Problems with the method: 
+% - The brush is big, so impossible to select trials that are obviously strange, but too close to valid trials.
+% - No way to cancel changes
 
 % figure
 S.fh = figure('units','normalized',...
