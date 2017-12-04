@@ -46,23 +46,58 @@ g(1,1).set_text_options('font','Arial')
 g(1,1).set_limit_extra([0 0],[0.05 0.05])
 
 
-load('GroupData0D.mat')
 
-for i=length(Megadatabase):-1:1
-    
-    Mega0D.Sex([i,i+length(Megadatabase)])=repmat(Megadatabase(i).Sex,2,1);
-    Mega0D.Stat([i,i+length(Megadatabase)])=repmat(Megadatabase(i).Stat,2,1);
-    Mega0D.Signal([i,i+length(Megadatabase)])=repmat(Megadatabase(i).Signal,2,1);
-    Mega0D.Subject([i, i+length(Megadatabase)])=Megadatabase(i).Subject';
+g(1,2)=gramm('x',Mega1D.Time,'y',mean(Mega1D.Forward,2), 'color',Mega1D.Sex,'subset', strcmp(Mega1D.Stat, Statistic) & ismember(Mega1D.Signal, Signals) & ~ismember(Mega1D.Subject,BadS));
+g(1,2).set_color_options('map',[0 0 1; 1 0 0])
 
-    Mega0D.data(i)=Megadatabase(i).MeanPosFwd;
-    Mega0D.data(i+length(Megadatabase))=Megadatabase(i).ROMFwd;
-    Mega0D.Time([i,i+length(Megadatabase)])=Megadatabase(i).Time;
-    Mega0D.Variable(i)={'Average Position'};
-    Mega0D.Variable(i+length(Megadatabase))={'Range of Motion'};
-    
-end 
+g(1,2).facet_grid(Mega1D.Signal,[],'scale', 'free_y', 'column_labels', true, ...
+    'row_labels',true);
+g(1,2).stat_summary('type','sem','geom','errorbar','setylim','true')
+g(1,2).no_legend()
 
+g(1,2).set_names('y','', 'x', '', 'row','', 'column', '')
+
+g.draw
+
+g(1,2).update('x',Mega0D.Time,'y',Mega0D.data, 'color',Mega0D.Sex,'subset', strcmp(Mega0D.Stat,Statistic) & ismember(Mega0D.Signal, Signals));
+g(1,2).set_color_options('map',[0 0 1; 1 0 0])
+g(1,2).stat_summary('type','sem','geom','point','setylim','true')
+g(1,2).set_point_options('base_size',8)
+g(1,2).no_legend()
+
+%g(1,2).set_names('y','', 'x', '', 'row','', 'column', '')
+
+g.draw(false)
+
+g(1,2).update('x',Mega0D.Time,'y',Mega0D.data, 'color',Mega0D.Sex,'subset', strcmp(Mega0D.Stat,Statistic) & ismember(Mega0D.Signal, Signals));
+g(1,2).set_color_options('map',[0 0 1; 1 0 0])
+g(1,2).stat_summary('type','sem','geom','line','setylim','true')
+
+
+g(1,2).set_limit_extra([0.5 0.5],[0.05 0.05])
+g(1,2).no_legend()
+
+%g(1,2).set_names('y','', 'x', '', 'row','', 'column', '')
+
+
+g.draw(false)
+% load('GroupData0D.mat')
+% 
+% for i=length(Megadatabase):-1:1
+%     
+%     Mega0D.Sex([i,i+length(Megadatabase)])=repmat(Megadatabase(i).Sex,2,1);
+%     Mega0D.Stat([i,i+length(Megadatabase)])=repmat(Megadatabase(i).Stat,2,1);
+%     Mega0D.Signal([i,i+length(Megadatabase)])=repmat(Megadatabase(i).Signal,2,1);
+%     Mega0D.Subject([i, i+length(Megadatabase)])=Megadatabase(i).Subject';
+% 
+%     Mega0D.data(i)=Megadatabase(i).MeanPosFwd;
+%     Mega0D.data(i+length(Megadatabase))=Megadatabase(i).ROMFwd;
+%     Mega0D.Time([i,i+length(Megadatabase)])=Megadatabase(i).Time;
+%     Mega0D.Variable(i)={'Average Position'};
+%     Mega0D.Variable(i+length(Megadatabase))={'Range of Motion'};
+%     
+% end 
+% 
 Mega0D.Sex=Mega0D.Sex(~isnan(Mega0D.data(:)))';
 Mega0D.Stat=Mega0D.Stat(~isnan(Mega0D.data(:)))';
 Mega0D.Signal=Mega0D.Signal(~isnan(Mega0D.data(:)))';
@@ -83,7 +118,7 @@ g(1,2).set_names('y','', 'x', '', 'row','', 'column', '')
 
 g.draw
 
-g(1,2).update('x',Mega0D.Time,'y',Mega0D.data, 'color',Mega0D.Sex,'subset', strcmp(Mega0D.Stat,Statistic) & ismember(Mega0D.Signal, Signals) & ~ismember(Mega0D.Subject,BadS));
+g(1,2).update('x',Mega0D.Time,'y',Mega0D.data, 'color',Mega0D.Sex,'subset', strcmp(Mega0D.Stat,Statistic) & ismember(Mega0D.Signal, Signals));
 g(1,2).set_color_options('map',[0 0 1; 1 0 0])
 g(1,2).stat_summary('type','sem','geom','point','setylim','true')
 g(1,2).set_point_options('base_size',8)
@@ -93,7 +128,7 @@ g(1,2).no_legend()
 
 g.draw(false)
 
-g(1,2).update('x',Mega0D.Time,'y',Mega0D.data, 'color',Mega0D.Sex,'subset', strcmp(Mega0D.Stat,Statistic) & ismember(Mega0D.Signal, Signals) & ~ismember(Mega0D.Subject,BadS));
+g(1,2).update('x',Mega0D.Time,'y',Mega0D.data, 'color',Mega0D.Sex,'subset', strcmp(Mega0D.Stat,Statistic) & ismember(Mega0D.Signal, Signals));
 g(1,2).set_color_options('map',[0 0 1; 1 0 0])
 g(1,2).stat_summary('type','sem','geom','line','setylim','true')
 
