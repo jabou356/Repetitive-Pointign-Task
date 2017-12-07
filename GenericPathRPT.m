@@ -2,6 +2,9 @@
 % RepetitivePointingTask_forJason folder in the OneDrive
 Path.ProjectPath=uigetdir('C:','Go get the project folder');
 
+% If working on Windows, it will find the \ and replace by /
+Path.ProjectPath(regexp(Path.ProjectPath,'\'))='/';
+
 % Indicate data from which project you want to analyze (e.g. 'Jason',
 % 'Asha', etc.) DO NOT FORGET THE QUOTES
 projet=input('Which project are you working on?');
