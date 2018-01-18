@@ -1,6 +1,8 @@
 clear; clc;
 GenericPathRPT
 
+FlagSave = 0;
+
 temp=importdata([Path.GroupDataPath, 'MegaDatabase0D.txt']);
 
 k=1;
@@ -47,4 +49,6 @@ for iline=size(temp.data,1):-1:1
     
 end
 
+if FlagSave
 save([Path.JBAnalyse, 'GroupData0D.mat'], 'Megadatabase');
+end
