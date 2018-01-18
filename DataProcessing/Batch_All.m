@@ -7,10 +7,12 @@ FlagScaling = 0;
 FlagIK = 0;
 FlagIKResidual = 0;
 FlagMot2KLO = 0;
-FlagCleanData = 0;
+FlagPartitionOSIM = 0;
+FlagCleanData = 1;
+FlagPerformance = 0;
 
 %% Configure Mot2Klo
-useold=0; % Do you want to use an old Result Klo file
+useold=1; % Do you want to use an old Result Klo file
 
 DoF={'ground_thorax_xRotation' 'ground_thorax_yRotation' 'ground_thorax_zRotation'...
     'ground_thorax_xTranslation' 'ground_thorax_yTranslation' 'ground_thorax_zTranslation'...
@@ -20,11 +22,11 @@ DoF={'ground_thorax_xRotation' 'ground_thorax_yRotation' 'ground_thorax_zRotatio
 
 %% Configure CleanData
 % Flags to indicate if we want to clean Markers and/OR joint angles (DoF)
-dorelevantMKR=0;
+dorelevantMKR=1;
 doDOF=1;
 
-%Channames we may want to clean
-ChannameImport(:)={'RIDX','RWRA','RELB','RSHO','CLAV','elv_angle', 'shoulder_elv', 'elbow_flexion','ground_thorax_yRotation', 'ground_thorax_zRotation', 'ground_thorax_xRotation', 'shoulder_rot'};
+%Channames we may want to clean (1:2 are Markers, 3:end are Angles
+ChannameImport(:)={'RIDX','RELB','elv_angle', 'shoulder_elv', 'elbow_flexion','ground_thorax_yRotation', 'ground_thorax_zRotation', 'ground_thorax_xRotation', 'shoulder_rot'};
 
 %% Load generic paths, include selecting the project you are working on (e.g. Asha)
 GenericPathRPT
@@ -170,7 +172,7 @@ for isubject=1:length(subjectID)
                 chan=find(strcmp(motdata.colheaders,DoF{iDoF})); % Get the good chan from .mot file
                 
                 data.OSIMDoF.(['channel', num2str(iDoF)]).label = DoF(iDoF);
-                data.OSIMDoF.(['channel', num2str(iDoF)].data = motdata.data(:,chan);
+                data.OSIMDoF.(['channel', num2str(iDoF)]).data = motdata.data(:,chan);
                 
             end
             
@@ -180,7 +182,29 @@ for isubject=1:length(subjectID)
         end
     end %if FlagMot2KLO
     
-    
+    %% Partition joint angle and relevent markers in Forward and Backward movements
+    if FlagPartitionOSIM
+        Klofiles = dir([Path.exportPath '*.klo']);
+        
+        
+        for itrial = 1 : length(Klofiles)
+            %Import .klo file
+            KloName=Klofiles(itrial).name;
+            
+            if ~strcmp(KloName,'static.klo')
+                load([Path.exportPath KloName], '-mat', 'data');
+                
+                if isfield(data,'PartData')
+                PartitionOSIM
+                end
+                
+                save([Path.exportPath KloName],'data')
+                
+                clear data fdata
+            end
+            
+        end
+    end %If FlagPartitionOSIM
     %% Remove bad trials from each subject using a GUI (should be simplified)
     if FlagCleanData
         % Find KloFiles that begins with 'Trial', and sort them
@@ -196,7 +220,7 @@ for isubject=1:length(subjectID)
             Klofiles=([Klofiles(1); Klofiles(end)]); % To keep just the first and last file
             
             
-            for itrial = 1 : length(cond)
+            for itrial = 1 : length(Klofiles)
                 %Import .klo file
                 load([Path.exportPath Klofiles{itrial}], '-mat', 'data');
                 
@@ -208,7 +232,7 @@ for isubject=1:length(subjectID)
                     
                     % If the signal is a Relevent Marker and the flag for markers is on
                     %: clean xdata, ydata and zdata
-                    if ismember(isignal,1:5) && dorelevantMKR == 1
+                    if ismember(isignal,1:2) && dorelevantMKR == 1
                         
                         %% Clean Data
                         %Clean Forward Xdata
@@ -251,7 +275,7 @@ for isubject=1:length(subjectID)
                         
                         % If the signal is an OpenSim DoF, the flag for DoF is on and there is no flag indicating IK is bad
                         %Clean data
-                    elseif ismember(isignal,6:length(ChannameImport)) && doDOF == 1 && ~exist([Path.exportPath, 'flagIK.txt'], 'file')
+                    elseif ismember(isignal,3:length(ChannameImport)) && doDOF == 1 && ~exist([Path.exportPath, 'flagIK.txt'], 'file')
                         
                         % Clean Forward Data
                         [~, data.Forward.(ChannameImport{isignal})]=clean_dataRPT(data.Forward.(ChannameImport{isignal}),...
@@ -261,21 +285,38 @@ for isubject=1:length(subjectID)
                         [~, data.Backward.(ChannameImport{isignal})]=clean_dataRPT(data.Backward.(ChannameImport{isignal}),...
                             ChannameImport{isignal},['subject', num2str((subjectID(isubject)))]);
                         
-                    end
-                    
-                    
-                    
+                    end      
                     
                 end
                 
                 %Save data in the Result folder
                 save([Path.exportPath Klofiles{itrial}], 'data');
                 
-                
-                
             end
             
         end
     end %Flag CleanData
+    
+    %% Motor performance measures: Normalized RELB and RIDX marker positions
+    if FlagPerformance
+        Klofiles = dir([Path.exportPath '*.klo']);
+        
+        
+        for itrial = 1 : length(Klofiles)
+            %Import .klo file
+            KloName=Klofiles(itrial).name;
+            
+            if ~strcmp(KloName,'static.klo')
+                load([Path.exportPath KloName], '-mat', 'data');
+                
+                data = MotorPErformance(data);
+                
+                save([Path.exportPath KloName],'data')
+                
+                clear data fdata
+            end
+            
+        end
+    end %if FlagPerformance
 end
-
+    

@@ -75,7 +75,7 @@ for imvt = 1:length(data.PartData.Xvideo)-1
         for ichan = 1:length(fieldnames(data.OSIMDoF)) 
             
             y = fdata.OSIMDoF.(['channel' num2str(ichan)]).data(start:finish-1);
-            channame = data.OSIMDoF.(['channel' num2str(ichan)]).label;
+            channame = data.OSIMDoF.(['channel' num2str(ichan)]).label{1};
             data.Forward.(channame)(:,kfwd) = interp1(x,y,1:(length(x)-1)/99:length(x));
             
         end % for ichan
@@ -112,7 +112,7 @@ for imvt = 1:length(data.PartData.Xvideo)-1
         for ichan = 1:length(fieldnames(data.OSIMDoF))
             
             y = fdata.OSIMDoF.(['channel' num2str(ichan)]).data(start:finish-1);
-            channame = data.OSIMDoF.(['channel' num2str(ichan)]).label;
+            channame = data.OSIMDoF.(['channel' num2str(ichan)]).label{1};
             data.Backward.(channame)(:,kbwd) = interp1(x,y,1:(length(x)-1)/99:length(x));
         
         end % for ichan
