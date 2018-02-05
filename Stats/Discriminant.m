@@ -1,4 +1,4 @@
-function [Xvalue, Sensitivity, Specificity, Correct] = Discriminant (X, Y, varargin)
+function [Xvalue, TruePositive, TrueNegative, FalsePositive, FalseNegative] = Discriminant (X, Y, varargin)
 %Developed by Jason Bouffard to compute discriminant validity of outcome
 %measures during the RPT.
 %Input X: AxB matrix with the analyzed signals (A = number of signals, B =
@@ -39,16 +39,21 @@ for isignal = 1 : size(X,1)
     for istep = 1:S
         
         if ~Xreverse
-        TruePositive = length(find(Y==max(Y) & X(isignal,:) > Xvalue(isignal, istep)));
-        TrueNegative = length(find(Y==min(Y) & X(isignal,:) < Xvalue(isignal, istep)));
+            
+        TruePositive(isignal,istep) = length(find(Y==max(Y) & X(isignal,:) > Xvalue(isignal, istep)));
+        TrueNegative(isignal,istep) = length(find(Y==min(Y) & X(isignal,:) < Xvalue(isignal, istep)));
+        FalsePositive(isignal,istep) = length(find(Y==min(Y) & X(isignal,:) > Xvalue(isignal, istep)));
+        FalseNegative(isignal,istep) = length(find(Y==max(Y) & X(isignal,:) < Xvalue(isignal, istep)));
+        
         else
-        TruePositive = length(find(Y==max(Y) & X(isignal,:) < Xvalue(isignal, istep)));
-        TrueNegative = length(find(Y==min(Y) & X(isignal,:) > Xvalue(isignal, istep)));
+            
+        TruePositive(isignal,istep) = length(find(Y==max(Y) & X(isignal,:) < Xvalue(isignal, istep)));
+        TrueNegative(isignal,istep) = length(find(Y==min(Y) & X(isignal,:) > Xvalue(isignal, istep)));
+        FalsePositive(isignal,istep) = length(find(Y==min(Y) & X(isignal,:) < Xvalue(isignal, istep)));
+        FalseNegative(isignal,istep) = length(find(Y==max(Y) & X(isignal,:) > Xvalue(isignal, istep)));
+        
         end
         
-        Sensitivity(isignal,istep) = TruePositive / nCase;
-        Specificity(isignal,istep) = TrueNegative / nHealthy;
-        Correct(isignal,istep) = (TruePositive + TrueNegative) / (nCase + nHealthy);
         
     end %istep
 end %isignal
