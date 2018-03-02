@@ -23,10 +23,18 @@ optSens(isignal) = Sensitivity(OptimalID(isignal),isignal);
 % AUC = int (y*dx) here dx is 1/100;
 ROCauc(isignal) = abs(trapz(1-Specificity(:,isignal),Sensitivity(:,isignal)));
 
+
 end
 
 %% Compute confusion analysis (ROC analysis) for a compound variable (i.e. summing Z scores of variables with SRM > 0.8 in Bouffard et al 2018)
+%For each of BestX: compute Average and StandDev of train dataset. Will be
+%used to compute z score for test dataset
+Average = mean(DataBaseRBT.BestX(:,train+1),2);
+StandDev = std(DataBaseRBT.BestX(:,train+1),0,2);
+
 % Compute Z score for the variables with SRM > 0.8
+Average = mean(DataBaseRBT.BestX(:,train+1),2);
+StandDev = std(DataBaseRBT.BestX(:,train+1),0,2);
 Z=zscore(DataBaseRPT.BestX,[],2);
 
 % Revert the z scores for variables whose values decrease with fatigue
@@ -72,12 +80,35 @@ end
 
 %% Figure 2: Actual performance of each variables on Test Dataset
 
-% Generate confusion table for each variable at opimal threshold value using test Data   
-[testTruePositive, testTrueNegative, testFalsePositive, testFalseNegative] = DiscriminantTest([DataBaseRPT.AllX(:,test+1);sum(Z(:,test+1),1)],DataBaseRPT.Y(test+1),OptimalThreshold);
+% Generate confusion table for each variable at opimal threshold value using test Data 
+for isignal = 1:length(DataBaseRPT.CAssignAll)
+
+    if isignal == length(DataBaseRPT.CAssignAll)
+    [testXvalue(:,isignal), testTruePositive(:,isignal), testTrueNegative(:,isignal), testFalsePositive(:,isignal), testFalseNegative(:,isignal)] = Discriminant(sum(Z(:,test+1),1),DataBaseRPT.Y(test+1));
+    else
+    [testXvalue(:,isignal), testTruePositive(:,isignal), testTrueNegative(:,isignal), testFalsePositive(:,isignal), testFalseNegative(:,isignal)] = Discriminant(DataBaseRPT.AllX(isignal,test+1),DataBaseRPT.Y(test+1));
+    end
+    
+    % Compute Sensitivity and Specificity at each threshold value
+    AlltestSensitivity(:,isignal)= testTruePositive(:,isignal)./(testTruePositive(:,isignal)+testFalseNegative(:,isignal));
+    AlltestSpecificity(:,isignal)= testTrueNegative(:,isignal)./(testTrueNegative(:,isignal)+testFalsePositive(:,isignal));
+    
+    % Compute Sensitivity and Specificity at Optimal Threshold
+    id = find(abs(testXvalue(:,isignal)-OptimalThreshold(isignal)) == min(abs(testXvalue(:,isignal)-OptimalThreshold(isignal))));
+    testSensitivity (isignal) = AlltestSensitivity (id,isignal);
+    testSpecificity (isignal) = AlltestSpecificity (id,isignal);
+    
+    % AUC = int (y*dx) here dx is 1/100;
+    testROCauc(isignal) = abs(trapz(1-AlltestSpecificity(:,isignal),AlltestSensitivity(:,isignal)));
+
+
+end
+
+%[testTruePositive, testTrueNegative, testFalsePositive, testFalseNegative] = DiscriminantTest([DataBaseRPT.AllX(:,test+1);sum(Z(:,test+1),1)],DataBaseRPT.Y(test+1),OptimalThreshold);
 
 % Compute sensitivity and specificity for the optimal cutoff point using test Data
-testSensitivity = testTruePositive./(testTruePositive+testFalseNegative);
-testSpecificity = testTrueNegative./(testTrueNegative+testFalsePositive);
+% testSensitivity = testTruePositive./(testTruePositive+testFalseNegative);
+% testSpecificity = testTrueNegative./(testTrueNegative+testFalsePositive);
 testJ = testSensitivity + testSpecificity - 1;
 
 % Generate report
@@ -91,9 +122,10 @@ g.geom_abline();
 g.set_names('x', 'False Positive rate; 1-specificity', 'y', 'True positive rate. sensitivity', 'color', 'Youden'' s J');
 g.draw;
 
-for isignal = 1: size(Sensitivity,2)
+for isignal = 1: length(testSensitivity)
     disp([DataBaseRPT.CAssignAll{rankJ(isignal)}, ': Sensitivity = ', num2str(testSensitivity(rankJ(isignal))), '; Specifcity = ', num2str(testSpecificity(rankJ(isignal))), ...
-        '; Optimal Threshold = ', num2str(OptimalThreshold(rankJ(isignal))), '; Youden''s J = ', num2str(testJ(rankJ(isignal)))])
+        '; Optimal Threshold = ', num2str(OptimalThreshold(rankJ(isignal))), '; Youden''s J = ', num2str(testJ(rankJ(isignal))),...
+        '; ROC area = ',  num2str(testROCauc(rankJ(isignal)))])
 end
 
 %% Figures: ROC curve for each variable (TrainDataset)
