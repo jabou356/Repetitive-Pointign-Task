@@ -29,36 +29,41 @@ end
 %% Compute confusion analysis (ROC analysis) for a compound variable (i.e. summing Z scores of variables with SRM > 0.8 in Bouffard et al 2018)
 %For each of BestX: compute Average and StandDev of train dataset. Will be
 %used to compute z score for test dataset
-Average = mean(DataBaseRBT.BestX(:,train+1),2);
-StandDev = std(DataBaseRBT.BestX(:,train+1),0,2);
+Average = mean(DataBaseRPT.BestX(:,train+1),2);
+StandDev = std(DataBaseRPT.BestX(:,train+1),0,2);
 
 % Compute Z score for the variables with SRM > 0.8
-Average = mean(DataBaseRBT.BestX(:,train+1),2);
-StandDev = std(DataBaseRBT.BestX(:,train+1),0,2);
-Z=zscore(DataBaseRPT.BestX,[],2);
+for isignal = 1:length(DataBaseRPT.CAssignBest)
+    
+Z(isignal,:)=(DataBaseRPT.BestX(isignal,:)-Average(isignal))/StandDev(isignal);
+
+end
 
 % Revert the z scores for variables whose values decrease with fatigue
 revert=find(mean(DataBaseRPT.BestX(:,DataBaseRPT.Y==1),2)>mean(DataBaseRPT.BestX(:,DataBaseRPT.Y==2),2));
 Z(revert,:)=Z(revert,:)*-1;
 
 % Generate confusion table for each threshold value, from min(X) to max(X) 
-[Xvalue(:,isignal+1), TruePositive(:,isignal+1), TrueNegative(:,isignal+1), FalsePositive(:,isignal+1), FalseNegative(:,isignal+1)] = Discriminant(sum(Z(:,train+1),1),DataBaseRPT.Y(train+1));
-DataBaseRPT.CAssignAll{isignal+1}='BestXCombined';
+[Xvalue(:,length(DataBaseRPT.CAssignAll)+1), TruePositive(:,length(DataBaseRPT.CAssignAll)+1), TrueNegative(:,length(DataBaseRPT.CAssignAll)+1), FalsePositive(:,length(DataBaseRPT.CAssignAll)+1), FalseNegative(:,length(DataBaseRPT.CAssignAll)+1)] = Discriminant(sum(Z(:,train+1),1),DataBaseRPT.Y(train+1));
 
 % Compute Sensitivity and Specificity at each threshold value
-Sensitivity(:,isignal+1)= TruePositive(:,isignal+1)./(TruePositive(:,isignal+1)+FalseNegative(:,isignal+1));
-Specificity(:,isignal+1)= TrueNegative(:,isignal+1)./(TrueNegative(:,isignal+1)+FalsePositive(:,isignal+1));
+Sensitivity(:,length(DataBaseRPT.CAssignAll)+1)= TruePositive(:,length(DataBaseRPT.CAssignAll)+1)./(TruePositive(:,length(DataBaseRPT.CAssignAll)+1)+FalseNegative(:,length(DataBaseRPT.CAssignAll)+1));
+Specificity(:,length(DataBaseRPT.CAssignAll)+1)= TrueNegative(:,length(DataBaseRPT.CAssignAll)+1)./(TrueNegative(:,length(DataBaseRPT.CAssignAll)+1)+FalsePositive(:,length(DataBaseRPT.CAssignAll)+1));
 
 % Find the optimal cutoff point based on Youden's J statistic
-J(:,isignal+1) = Sensitivity(:,isignal+1) + Specificity(:,isignal+1) - 1 ;
-OptimalID(isignal+1)=find(J(:,isignal+1)==max(J(:,isignal+1)),1,'first');
-OptimalThreshold(isignal+1)=Xvalue(OptimalID(isignal+1),isignal+1);
+J(:,length(DataBaseRPT.CAssignAll)+1) = Sensitivity(:,length(DataBaseRPT.CAssignAll)+1) + Specificity(:,length(DataBaseRPT.CAssignAll)+1) - 1 ;
+OptimalID(length(DataBaseRPT.CAssignAll)+1)=find(J(:,length(DataBaseRPT.CAssignAll)+1)==max(J(:,length(DataBaseRPT.CAssignAll)+1)),1,'first');
+OptimalThreshold(length(DataBaseRPT.CAssignAll)+1)=Xvalue(OptimalID(length(DataBaseRPT.CAssignAll)+1),length(DataBaseRPT.CAssignAll)+1);
 
-optSpec(isignal+1) = Specificity(OptimalID(isignal+1),isignal+1);
-optSens(isignal+1) = Sensitivity(OptimalID(isignal+1),isignal+1);
+optSpec(length(DataBaseRPT.CAssignAll)+1) = Specificity(OptimalID(length(DataBaseRPT.CAssignAll)+1),length(DataBaseRPT.CAssignAll)+1);
+optSens(length(DataBaseRPT.CAssignAll)+1) = Sensitivity(OptimalID(length(DataBaseRPT.CAssignAll)+1),length(DataBaseRPT.CAssignAll)+1);
 
 % AUC = int (x*y*dx) here dx is 1/100;
-ROCauc(isignal+1) = abs(trapz(1-Specificity(:,isignal+1),Sensitivity(:,isignal+1)));
+ROCauc(length(DataBaseRPT.CAssignAll)+1) = abs(trapz(1-Specificity(:,length(DataBaseRPT.CAssignAll)+1),Sensitivity(:,length(DataBaseRPT.CAssignAll)+1)));
+
+% Append 'BestXCombined' at the end of CAssignAll
+DataBaseRPT.CAssignAll{length(DataBaseRPT.CAssignAll)+1}='BestXCombined';
+
 
 %% Figure 1: Position of the optimal cutoff point for each variable on a ROC curve (Train Dataset)
 
