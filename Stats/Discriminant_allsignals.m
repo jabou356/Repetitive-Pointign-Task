@@ -77,15 +77,24 @@ g.set_names('x', 'False Positive rate; 1-specificity', 'y', 'True positive rate.
 g.draw;
 
 [~, rankJ] = sort(max(J(:,:)), 'descend');
-for isignal = 1: size(Sensitivity,2)
+for isignal = 1: length(DataBaseRPT.CAssignAll)
     disp([DataBaseRPT.CAssignAll{rankJ(isignal)}, ': Sensitivity = ', num2str(Sensitivity(OptimalID(rankJ(isignal)),rankJ(isignal))), '; Specifcity = ', ...
         num2str(Specificity(OptimalID(rankJ(isignal)),rankJ(isignal))), ...
         '; Optimal Threshold = ', num2str(OptimalThreshold(rankJ(isignal))), '; Youden''s J = ', num2str(max(J(:,rankJ(isignal))))])
+    
+    % romain
+    train_sensitivity(rankJ(isignal)) = Sensitivity(OptimalID(rankJ(isignal)),rankJ(isignal));
+    train_specificity(rankJ(isignal)) = Specificity(OptimalID(rankJ(isignal)),rankJ(isignal));
 end
 
 %% Figure 2: Actual performance of each variables on Test Dataset
 
 % Generate confusion table for each variable at opimal threshold value using test Data 
+X_train = DataBaseRPT.AllX(:,train+1);
+y_train = DataBaseRPT.Y(train+1);
+
+revert=find(mean(X_train(:, y_train==1), 2) > mean(X_train(:, y_train==2), 2));
+
 for isignal = 1:length(DataBaseRPT.CAssignAll)
 
     if isignal == length(DataBaseRPT.CAssignAll)
@@ -99,7 +108,13 @@ for isignal = 1:length(DataBaseRPT.CAssignAll)
     AlltestSpecificity(:,isignal)= testTrueNegative(:,isignal)./(testTrueNegative(:,isignal)+testFalsePositive(:,isignal));
     
     % Compute Sensitivity and Specificity at Optimal Threshold
-    id = find(abs(testXvalue(:,isignal)-OptimalThreshold(isignal)) == min(abs(testXvalue(:,isignal)-OptimalThreshold(isignal))));
+    %id = find(abs(testXvalue(:,isignal)-OptimalThreshold(isignal)) == min(abs(testXvalue(:,isignal)-OptimalThreshold(isignal))));
+    if any(isignal == revert)
+        id = find(testXvalue(:,isignal)>=OptimalThreshold(isignal),1,'first');
+    else
+        id = find(testXvalue(:,isignal)<=OptimalThreshold(isignal),1,'last');
+    end
+
     testSensitivity (isignal) = AlltestSensitivity (id,isignal);
     testSpecificity (isignal) = AlltestSpecificity (id,isignal);
     
@@ -109,11 +124,6 @@ for isignal = 1:length(DataBaseRPT.CAssignAll)
 
 end
 
-%[testTruePositive, testTrueNegative, testFalsePositive, testFalseNegative] = DiscriminantTest([DataBaseRPT.AllX(:,test+1);sum(Z(:,test+1),1)],DataBaseRPT.Y(test+1),OptimalThreshold);
-
-% Compute sensitivity and specificity for the optimal cutoff point using test Data
-% testSensitivity = testTruePositive./(testTruePositive+testFalseNegative);
-% testSpecificity = testTrueNegative./(testTrueNegative+testFalsePositive);
 testJ = testSensitivity + testSpecificity - 1;
 
 % Generate report
@@ -131,13 +141,17 @@ for isignal = 1: length(testSensitivity)
     disp([DataBaseRPT.CAssignAll{rankJ(isignal)}, ': Sensitivity = ', num2str(testSensitivity(rankJ(isignal))), '; Specifcity = ', num2str(testSpecificity(rankJ(isignal))), ...
         '; Optimal Threshold = ', num2str(OptimalThreshold(rankJ(isignal))), '; Youden''s J = ', num2str(testJ(rankJ(isignal))),...
         '; ROC area = ',  num2str(testROCauc(rankJ(isignal)))])
+    
+    % romain
+    test_sensitivity(isignal) = testSensitivity(isignal);
+    test_specificity(isignal) = testSpecificity(isignal);
 end
 
 %% Figures: ROC curve for each variable (TrainDataset)
 for isignal = 1: size(Sensitivity,2)
     disp([DataBaseRPT.CAssignAll{rankJ(isignal)}, ': ROC auc = ', num2str(ROCauc(rankJ(isignal)))])
 end
-
+% 
 figure 
 g=gramm('x',(1-Specificity)','y',Sensitivity');
 g.fig(DataBaseRPT.CAssignAll);
@@ -146,3 +160,69 @@ g.geom_abline();
 g.set_names('x', 'False Positive rate; 1-specificity', 'y', 'True positive rate. sensitivity');
 g.draw;
 
+
+%% Romain
+
+
+
+for train_or_test = {train, test}
+    if length(train_or_test{:}) > 50
+        disp('train evaluation:')
+        jason.auc = ROCauc;
+        jason.sensitivity = train_sensitivity;%(end:-1:1);
+        jason.specificity = train_specificity;%(end:-1:1);
+    else
+        disp('test evaluation:')
+        jason.auc = testROCauc;
+        jason.sensitivity = test_sensitivity;
+        jason.specificity = test_specificity;
+    end
+
+    for isignal = 1 : length(DataBaseRPT.CAssignAll)
+        if isignal == length(DataBaseRPT.CAssignAll)
+            current = sum(Z(:, train_or_test{:} + 1), 1);
+        else
+            current = DataBaseRPT.AllX(isignal, train_or_test{:} + 1);
+        end
+
+        threshold = OptimalThreshold(isignal);
+
+
+        if any(isignal == revert)
+            y_pred = (current < threshold) + 1;
+        else
+            y_pred = (current > threshold) + 1;
+        end
+
+        y_true = DataBaseRPT.Y(train_or_test{:} + 1);
+
+        c_mat = confusionmat(y_true, y_pred);
+
+        tp = c_mat(2, 2);
+        fp = c_mat(1, 2);
+        fn = c_mat(2, 1);
+        tn = c_mat(1, 1);
+
+        fprintf('\t%s\n', DataBaseRPT.CAssignAll{isignal})
+
+        % a. precision
+        precision = tp ./ (tp + fp);
+        fprintf('\t\tprecision = %4.2f\n', precision)
+
+        % b. sensitivity (or recall)
+        sensitivity = tp ./ (tp + fn);
+        fprintf('\t\tsensitivity = %4.2f (Jason''s: %4.2f)\n',...
+            sensitivity, jason.sensitivity(isignal))
+
+        % c. specificity
+        specificity = tn ./ (tn + fp);
+        fprintf('\t\tspecificity = %4.2f (Jason''s: %4.2f)\n',...
+            specificity, jason.specificity(isignal))
+
+        % d. ROC AUC
+        [X, Y, T, auc] = perfcurve(y_true, y_pred, 2);
+        fprintf('\t\tROC auc = %4.2f (Jason''s: %4.2f)\n',...
+            auc, jason.auc(isignal))
+    end % isignal
+    clear jason
+end % train_or_test
