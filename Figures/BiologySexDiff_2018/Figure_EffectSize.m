@@ -2,11 +2,12 @@ close all
 
 % Generate figure for SRM with Confidence interval
 % X value: DoF, Y value SRM +- IC, Women Red, Men Blue
-g=gramm('x',data.Signal,'y',data.SRM, 'ymin',data.SRMlow, 'ymax', data.SRMup,'color',data.Sex)%, 'label', round(data.proportion))
+g=gramm('x',data.Signal,'y',data.SRM, 'ymin',data.SRMlowJS, 'ymax', data.SRMupJS,'color',data.Sex)%, 'label', round(data.proportion))
 g.set_color_options('map',[0 0 1; 1 0 0])
 
-% Set X Tick Label at 45 deg (names of DoF) and SRM limits between -2 and 2
-g.axe_property('XTickLabelRotation',45,'YLim',[-2 2]) 
+% Set X Tick Label at 45 deg (names of DoF) and SRM limits between -.2.5
+% and 2.5
+g.axe_property('XTickLabelRotation',45,'YLim',[-2.5 2.5]) 
 
 % Create 2x2 figure, colume are Statistics (Mean or SD) and Rows are
 % Variables (Average position or Range of Motion)
@@ -26,6 +27,7 @@ g.set_text_options('Font','Arial','label_scaling',1.2)
 figure('Position',[100 100 800 600])
 g.draw()
 
+g.export('file_name','Figure5rev','file_type','pdf');
 % g.update('x',data.Signal,'y',(data.proportion-50)/100*4,'color',data.Sex)
 % g.set_color_options('map',[0 0 1; 1 0 0])
 % 
